@@ -1,0 +1,1 @@
+<table class="table table-bordered table-hover datatable-highlight data-table-border-solid" style="border-left: none;">

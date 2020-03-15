@@ -1,0 +1,730 @@
+@charset "utf-8";
+/* CSS Document */
+@font-face {
+    font-family: 'Roboto Light';
+    src: local('Roboto Light'), local('Roboto-Light'), url('../fonts/roboto/Robotolight.woff2') format('woff2'), url('../fonts/roboto/Robotolight.woff') format('woff'), url('../fonts/roboto/Robotolight.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto Bold';
+    src: local('Roboto Bold'), local('Roboto-Bold'), url('../fonts/roboto/Robotobold.woff2') format('woff2'), url('../fonts/roboto/Robotobold.woff') format('woff'), url('../fonts/roboto/Robotobold.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto lighti talic';
+    src: local('Robotolightitalic'), local('Robotolightitalic'), url('../fonts/roboto/Robotolightitalic.woff2') format('woff2'), url('../fonts/roboto/Robotolightitalic.woff') format('woff'), url('../fonts/roboto/Robotolightitalic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto';
+    src: local('Roboto'), local('Roboto'), url('../fonts/roboto/Roboto.woff2') format('woff2'), url('../fonts/roboto/Roboto.woff') format('woff'), url('../fonts/roboto/Roboto.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+html.neiros-site-full-block{
+	position: fixed !important;
+    height: 100% !important;
+    width: 100% !important;
+	}
+#neiros__chat_before_iframe{
+	transition: .9s;
+	position:fixed !important;
+	left:auto;
+/*-webkit-box-shadow: 0px 0px 8px rgba(7, 125, 159, 0.5);
+-moz-box-shadow:    0px 0px 8px rgba(7, 125, 159, 0.5);
+box-shadow:         0px 0px 8px rgba(7, 125, 159, 0.5);*/
+	opacity: 1;
+visibility: visible;
+    border-radius: 10px;
+    width: 350px;
+	padding-bottom:0px;
+    height: 590px;
+    right: 30px;
+    padding-top: 0px;
+    bottom: 4px;
+   /* background-color: #FFFFFF;*/
+    top: auto;
+    z-index: 2147483647;
+	}
+#neiros__chat_iframe{
+position: relative !important;
+    padding: 0 !important;
+    margin: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    display: block !important;
+    background: transparent !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    opacity: 1;
+    visibility: visible;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+	border:0px;
+	
+	}
+/*Кнопка открытия чата*/	
+.neiros__start_btn{
+	border: 2px solid #00B9EE;
+	box-shadow: 0px 0px 0px 4px rgba(248,248,248,1);
+	cursor:pointer;
+	position:fixed;
+	left:auto;
+	right: 69px;
+    bottom: 64px;
+	width: 60px;
+	height:60px;
+	background:#FFFFFF;
+	border-radius:50%;
+	}
+.neiros__start_btn img{
+	width:100%;}	
+
+.neiros__start_btn_show.neiros__start_btn{
+	border:none;
+	background:#D1D1D1;
+	}
+	
+/*Окно приветствия*/	
+#neiros__chat_hello_window{
+	border-radius: 10px;
+	-webkit-box-shadow: 0px 0px 8px rgba(7, 125, 159, 0.5);
+	-moz-box-shadow:    0px 0px 8px rgba(7, 125, 159, 0.5);
+	box-shadow:         0px 0px 8px rgba(7, 125, 159, 0.5);
+	position:fixed;
+	background:#FFFFFF;
+	bottom: 61px;
+	padding: 20px 25px 20px 25px;
+	width: 250px;
+	min-height: 150px;
+	min-width:300px;
+	max-width: 300px;
+	top:auto;
+	left:auto;
+	right:151px;}
+
+	#neiros__chat_hello_window:after,
+#neiros__chat_hello_window:before {
+    content: '';
+    left: auto;
+    position: absolute;
+    top: auto;
+    right: -6px;
+    bottom: 22px;
+    background: #FFFFFF;
+    /* margin-left: -20px; */
+    width: 18px;
+    height: 18px;
+    box-shadow: 0px 0px 8px rgba(7, 125, 159, 0.5);
+    z-index: -1;
+    transform: rotate(-45deg);
+}
+#neiros__chat_hello_window:after{
+    transform: rotate(0deg);
+    box-shadow: none;
+    right: 0px;
+    bottom: 17px;
+    height: 26px;
+    z-index: 2;
+	}	
+	
+	
+#neiros__chat_hello_window .neiros__closet__hello_window{
+	cursor: pointer;
+	width: 14px;
+    position: absolute;
+    right: 13px;
+    top: 13px;
+	}
+#neiros__chat_hello_window .neiros__open__chart{
+    letter-spacing: 2px;
+    cursor: pointer;
+    font-family: 'Roboto';
+    text-transform: uppercase;
+    background: #00B9EE;
+    border-radius: 30px;
+    color: #FFFFFF;
+    font-size: 14px;
+    max-height: 37px;
+    width: 165px;
+    text-align: center;
+    padding-top: 8px;
+    padding-bottom: 10px;}	
+#neiros__chat_hello_window .neiros__open__chart:hover{
+	background:#00A7D5;
+	}	
+#neiros__chat_hello_window .neiros__operator__name{
+    font-family: 'Roboto Bold' !important;
+    font-size: 16px !important;
+    color: #000 !important;
+    line-height: 1.2 !important;
+	}
+#neiros__chat_hello_window .neiros__operator__dol{
+    font-family: 'Roboto Light' !important;
+    font-size: 14px !important;
+    color: #000 !important;
+    font-weight: 300 !important;
+    line-height: 1.2 !important;
+	}	
+#neiros__chat_hello_window .neiros__operator__text{
+	font-family: 'Roboto Light' !important;
+    padding-top: 10px !important;
+    font-size: 14px !important;
+    padding-bottom: 10px !important;
+    line-height: 1.2 !important;
+    color: #000 !important;
+	}					
+.neiros__start_btn_show.neiros__start_btn:before{
+	content: ' ';
+	position:absolute;
+	width: 50px;
+	height: 50px;
+	background: url(https://cloud.neiros.ru/cdn/v1/chatv2/images/icons/icon-close-x.PNG) center center no-repeat;
+	 right: 5px;
+    top: 5px;
+	}	
+	
+	
+
+
+
+
+
+.neiros__slideUp{
+    animation-name: slideUp;
+    -webkit-animation-name: slideUp;    
+ 
+    animation-duration: 1s; 
+    -webkit-animation-duration: 1s;
+ 
+    animation-timing-function: ease;    
+    -webkit-animation-timing-function: ease;
+ 
+    visibility: visible !important;         
+}
+ 
+@keyframes slideUp {
+    0% {
+        transform: translateY(100%);
+    }
+    50%{
+        transform: translateY(0%);
+    }
+    65%{
+        transform: translateY(0%);
+    }
+    80%{
+        transform: translateY(0%);
+    }
+    95%{
+        transform: translateY(0%);
+    }           
+    100% {
+        transform: translateY(0%);
+    }   
+}
+ 
+@-webkit-keyframes slideUp {
+    0% {
+        -webkit-transform: translateY(100%);
+    }
+    50%{
+        -webkit-transform: translateY(0%);
+    }
+    65%{
+        -webkit-transform: translateY(0%);
+    }
+    80%{
+        -webkit-transform: translateY(0%);
+    }
+    95%{
+        -webkit-transform: translateY(0%);
+    }           
+    100% {
+        -webkit-transform: translateY(0%);
+    }   
+}
+	
+	
+	
+	
+	
+	/*Animation show winow*/			
+.neiros__fadeIn{
+    animation-name: fadeIn;
+    -webkit-animation-name: fadeIn; 
+ 
+    animation-duration: 1s; 
+    -webkit-animation-duration: 1s;
+ 
+    animation-timing-function: ease-in-out; 
+    -webkit-animation-timing-function: ease-in-out;     
+ 
+    visibility: visible !important; 
+}
+ 
+@keyframes fadeIn {
+    0% {
+        transform: scale(0);
+        opacity: 0.0;       
+    }
+    60% {
+        transform: scale(1);  
+    }
+    80% {
+        transform: scale(1);
+        opacity: 1; 
+    }   
+    100% {
+        transform: scale(1);
+        opacity: 1; 
+    }       
+}
+ 
+@-webkit-keyframes fadeIn {
+    0% {
+        -webkit-transform: scale(0);
+        opacity: 0.0;       
+    }
+    60% {
+        -webkit-transform: scale(1);
+    }
+    80% {
+        -webkit-transform: scale(1);
+        opacity: 1; 
+    }   
+    100% {
+        -webkit-transform: scale(1);
+        opacity: 1; 
+    }       
+}
+
+#neiros__chat_before_iframe .neiros__closet-icon-modal{
+	cursor:pointer;
+	    z-index: 10;
+	 position: absolute;
+    right: 15px;
+    top: 15px;
+	width: 17px;
+    height: 17px;
+	}	
+
+
+.neiros__btn_round{
+	display:none;
+	background: #00b9ee;
+    border: 5px solid rgba(228,244,249,0.9);
+    cursor: pointer;
+    text-align: center;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;}
+	
+.neiros__btn_round.visionthis{
+ display: inline-block;	
+	}	
+	
+.neiros__btn_round img{
+	    margin-top: 11px;
+    width: 26px;
+	}
+	
+	
+#neiros__chat_btn{
+    z-index: 9999;
+    position: fixed;
+    left: auto;
+    right: 20px;
+    bottom: 188px;}
+	
+#neiros__phone_btn{   z-index: 9999;
+    position: fixed;
+    left: auto;
+    right: 85px;
+    bottom: 172px;}	
+	
+#neiros__lid_btn{   z-index: 9999;
+    position: fixed;
+    left: auto;
+    right: 143px;
+    bottom: 136px;}	
+#neiros__geo_btn{   z-index: 9999;
+	position: fixed;
+    left: auto;
+    right: 178px;
+    bottom: 77px;}		
+#neiros__socialpng_btn{   z-index: 9999;
+	position: fixed;
+    left: auto;
+    right: 193px;
+    bottom: 10px;}	
+.neiros__toltip{
+    width: 90px;
+    color: #000;
+    max-width: 92px !important;
+    text-align: left;
+    font-size: 12px;
+    position: absolute;
+    top: -61px;
+    line-height: 1.3;
+    right: 7px;
+    font-family: 'Roboto Light';
+    padding: 7px 3px 4px 15px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 2px rgba(7, 125, 159, 0.5);
+    -moz-box-shadow: 0px 0px 2px rgba(7, 125, 159, 0.5);
+    box-shadow: 0px 0px 2px rgba(7, 125, 159, 0.5);
+    background: #FFFFFF;
+	}	
+#neiros__chat_btn .neiros__toltip:after, #neiros__chat_btn .neiros__toltip:before{
+    content: '';
+    left: auto;
+    position: absolute;
+    top: auto;
+    right: 13px;
+    bottom: -5px;
+    background: #FFFFFF;
+    width: 9px;
+    height: 9px;
+    box-shadow: 0px 0px 2px rgba(7, 125, 159, 0.5);
+    z-index: -1;
+    transform: rotate(-45deg);
+	}
+#neiros__chat_btn .neiros__toltip:after{
+transform: rotate(0deg);
+    box-shadow: none;
+    z-index: 2;
+    right: 12px;
+    width: 11px;
+    bottom: -1px;
+	}	
+	
+#neiros__phone_btn .neiros__toltip:after, #neiros__phone_btn .neiros__toltip:before{
+    content: '';
+    left: auto;
+    position: absolute;
+    top: auto;
+    right: 13px;
+    bottom: -5px;
+    background: #FFFFFF;
+    width: 9px;
+    height: 9px;
+    box-shadow: 0px 0px 2px rgba(7, 125, 159, 0.5);
+    z-index: -1;
+    transform: rotate(-45deg);
+	}
+#neiros__phone_btn .neiros__toltip:after{
+transform: rotate(0deg);
+    box-shadow: none;
+    z-index: 2;
+    right: 12px;
+    width: 11px;
+    bottom: -1px;
+	}	
+#neiros__phone_btn .neiros__toltip{
+    right: 13px;
+    top: -62px;
+	}	
+	
+	
+#neiros__lid_btn .neiros__toltip:after, #neiros__lid_btn .neiros__toltip:before{
+    content: '';
+    left: auto;
+    position: absolute;
+    top: auto;
+    right: -4px;
+    bottom: 17px;
+    background: #FFFFFF;
+    width: 9px;
+    height: 9px;
+    box-shadow: 0px 0px 2px rgba(7, 125, 159, 0.5);
+    z-index: -1;
+    transform: rotate(-45deg);
+	}
+#neiros__lid_btn .neiros__toltip:after{
+    transform: rotate(0deg);
+    box-shadow: none;
+    z-index: 2;
+    right: -2px;
+    width: 11px;
+    bottom: 17px;
+	}	
+#neiros__lid_btn .neiros__toltip{
+	right: 69px;
+    top: 4px;
+	}		
+	
+	
+#neiros__geo_btn .neiros__toltip:after, #neiros__geo_btn .neiros__toltip:before{
+    content: '';
+    left: auto;
+    position: absolute;
+    top: auto;
+    right: -4px;
+    bottom: 17px;
+    background: #FFFFFF;
+    width: 9px;
+    height: 9px;
+    box-shadow: 0px 0px 2px rgba(7, 125, 159, 0.5);
+    z-index: -1;
+    transform: rotate(-45deg);
+	}
+#neiros__geo_btn .neiros__toltip:after{
+    transform: rotate(0deg);
+    box-shadow: none;
+    z-index: 2;
+    right: -2px;
+    width: 11px;
+    bottom: 17px;
+	}	
+#neiros__geo_btn .neiros__toltip{
+	right: 69px;
+    top: 4px;
+	}
+
+
+
+
+#neiros__socialpng_btn .neiros__toltip:after, #neiros__socialpng_btn .neiros__toltip:before{
+    content: '';
+    left: auto;
+    position: absolute;
+    top: auto;
+    right: -4px;
+    bottom: 17px;
+    background: #FFFFFF;
+    width: 9px;
+    height: 9px;
+    box-shadow: 0px 0px 2px rgba(7, 125, 159, 0.5);
+    z-index: -1;
+    transform: rotate(-45deg);
+	}
+#neiros__socialpng_btn .neiros__toltip:after{
+    transform: rotate(0deg);
+    box-shadow: none;
+    z-index: 2;
+    right: -2px;
+    width: 11px;
+    bottom: 17px;
+	}	
+#neiros__socialpng_btn .neiros__toltip{
+	right: 69px;
+    top: 4px;
+	}
+.neiros__toltip{
+	display:none;}	
+.neiros__toltip.visablethis{
+	display: block;
+	}
+
+
+
+
+#neiros__btn_block .neiros__text_block{
+display:none;
+	
+	}	
+#neiros__btn_block .neiros__botoom_border{
+display:none;
+	}
+#neiros__btn_block .neiros__botoom_btn{
+display:none;
+	}
+#neiros__btn_block .neiros__botoom_btn span{
+	display:none;}	
+	
+@media (max-width: 450px) {
+	#neiros__chat_before_iframe {
+    transition: .9s;
+    position: fixed !important;
+    left: 0px;
+    opacity: 1;
+    visibility: visible;
+    border-radius: 0px;
+    width: 100%;
+    padding-bottom: 0px;
+    height: 100%;
+    right: 0px;
+    padding-top: 0px;
+    bottom: 0px;
+
+    top: 0px;
+    z-index: 2147483647;
+}
+
+#neiros__chat_hello_window:after, #neiros__chat_hello_window:before {
+    right: 67px;
+    bottom: -9px;
+}
+#neiros__chat_hello_window:after {
+    right: 64px;
+    bottom: -1px;
+    width: 24px;
+    height: 16px;
+}
+#neiros__chat_hello_window{
+    right: 27px;
+    bottom: 146px;
+	}
+#neiros__chat_before_iframe .neiros__closet-icon-modal {
+    cursor: pointer;
+    z-index: 200000000;
+ 
+    display: block;
+    height: 50px;
+    width: 62px;
+    position: fixed;
+    right: 0px;
+    top: 1px;
+}
+
+#neiros__chat_before_iframe .neiros__closet-icon-modal  img{
+	    margin-left: 24px;
+    margin-top: 15px;
+}
+
+
+#neiros__chat_btn, #neiros__phone_btn, #neiros__lid_btn, #neiros__geo_btn, #neiros__socialpng_btn{
+	position:relative;
+	right:auto;
+	left:auto;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left:0px;
+	margin-right:0px;
+	bottom: auto;
+	text-align: center;
+    display: inline-block;
+	
+	}
+#neiros__btn_block{
+	display:none;
+	text-align: center;
+	margin: 0 auto;
+	z-index: 10000;
+	width:100%;
+	height: 100%;
+	height: auto;
+	bottom: 0px;
+	background:rgba(0,0,0,0.40);
+	top:0px;
+    left: 0px;
+    right: 0px;
+	position:fixed;
+	}
+#neiros__btn_block.visabled{
+	display:block;}		
+#neiros__btn_block .neiros__out_block{
+	background: #FFFFFF;
+	position: absolute;
+	height: 200px;
+	left: 5px;
+	right: 5px;
+	width: 90%;
+	margin: 0 auto;
+	bottom: 45px;
+	border-radius: 10px;
+	display:block;
+	}	
+#neiros__btn_block .neiros__text_block{
+	text-align:center;
+	font-family: 'Roboto';
+	color:#222222;
+	font-size: 20px;
+	padding-top: 20px;
+    padding-bottom: 20px;
+	border-bottom: 1px solid #e5e5e5;
+	margin-bottom: 10px;
+	display:block;
+	
+	}	
+#neiros__btn_block .neiros__botoom_border{
+	display:block;
+	width: 100%;
+	height:2px;
+	border-bottom: 1px solid #e5e5e5;
+	padding-top: 10px;
+	}
+#neiros__btn_block .neiros__botoom_btn{
+	display:block;
+	font-family: 'Roboto';
+	font-size: 20px;
+	margin-top: 10px;
+	color:#222222;
+	}
+#neiros__btn_block .neiros__botoom_btn span{
+	display:block;
+	cursor:pointer;
+	padding-top: 0px;
+    color: #4E4E4E;
+    font-family: 'Roboto Light';}	
+.neiros__btn_round{
+	width:50px;
+	height:50px;}	
+.neiros__btn_round img {
+    margin-top: 9px;
+    width: 22px;
+}			
+	}	
+	
+	
+	
+	
+	
+#neiros__chat_before_iframe	.neiros__copiright_new2{
+    position: absolute;
+	display:none;
+    width: 100%;
+    bottom: -19px;
+    font-family: 'Roboto';
+    color: #000000;
+    font-size: 13px;
+    text-align: center;
+	}		
+#neiros__chat_before_iframe.mobile{
+	background:rgba(0,0,0,0.40) !important;
+	}
+#neiros__chat_before_iframe .neiros__closet-icon-modal.mobile{
+    cursor: pointer;
+    z-index: 200000000;
+    text-align: center;
+    display: block;
+    height: 50px;
+    width: 50%;
+    position: fixed;
+    right: 25%;
+    left: 25%;
+    top: auto;
+    bottom: 55px;
+	}	
+#neiros__chat_before_iframe .neiros__closet-icon-modal.mobile2{
+    cursor: pointer;
+    z-index: 200000000;
+    text-align: center;
+    display: block;
+    height: 50px;
+    width: 50%;
+    position: fixed;
+    right: 25%;
+    left: 25%;
+    top: auto;
+    bottom: 28px;
+	}			
+#neiros__chat_before_iframe .neiros__closet-icon-modal.mobile img{
+	margin-left: 26px;
+    margin-top: 15px;
+    width: 14px;
+	}
+	
+		

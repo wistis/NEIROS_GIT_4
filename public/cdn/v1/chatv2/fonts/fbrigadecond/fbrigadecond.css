@@ -1,0 +1,6 @@
+@font-face {
+    font-family: 'Fundamental Brigade Condensed';
+    src: local('Fundamental  Brigade Condensed'), local('FundamentalBrigadeCondensed'), url('fundamentalbrigadecondensed.woff2') format('woff2'), url('fundamentalbrigadecondensed.woff') format('woff'), url('fundamentalbrigadecondensed.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}

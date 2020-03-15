@@ -1,0 +1,331 @@
+@charset "utf-8";
+/* CSS Document */
+
+@font-face {
+    font-family: 'Roboto Light';
+    src: local('Roboto Light'), local('Roboto-Light'), url('../fonts/roboto/Robotolight.woff2') format('woff2'), url('../fonts/roboto/Robotolight.woff') format('woff'), url('../fonts/roboto/Robotolight.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto Bold';
+    src: local('Roboto Bold'), local('Roboto-Bold'), url('../fonts/roboto/Robotobold.woff2') format('woff2'), url('../fonts/roboto/Robotobold.woff') format('woff'), url('../fonts/roboto/Robotobold.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto lighti talic';
+    src: local('Robotolightitalic'), local('Robotolightitalic'), url('../fonts/roboto/Robotolightitalic.woff2') format('woff2'), url('../fonts/roboto/Robotolightitalic.woff') format('woff'), url('../fonts/roboto/Robotolightitalic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto';
+    src: local('Roboto'), local('Roboto'), url('../fonts/roboto/Roboto.woff2') format('woff2'), url('../fonts/roboto/Roboto.woff') format('woff'), url('../fonts/roboto/Roboto.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+#neiros__lead_catcher_before_iframe{
+	top:0px !important;
+	transition: .9s;
+	position:fixed !important;
+	left:50%; 
+	margin-left:-325px;
+	opacity: 1;
+	visibility: visible;
+    width: 650px;
+	padding-bottom:0px;
+    height: 260px;
+    right: auto;
+    padding-top: 0px;
+    bottom: auto;
+	background: none;
+	border:none;
+    top: auto;
+    z-index: 2147483647;
+	}
+#neiros__lead_catcher_before_iframe.left{
+	left: 1%;
+    margin-left: 0px;
+	}
+#neiros__lead_catcher_before_iframe.right{
+	left: auto;
+	right: 1%;
+    margin-left: 0px;
+	}		
+#neiros__lead_catcher{
+position: relative !important;
+    padding: 0 !important;
+    margin: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    display: block !important;
+    background: transparent !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    opacity: 1;
+    visibility: visible;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+	border:0px;
+	
+	}
+
+
+.neiros__slideUp{
+    animation-name: slideUp;
+    -webkit-animation-name: slideUp;    
+ 
+    animation-duration: 1s; 
+    -webkit-animation-duration: 1s;
+ 
+    animation-timing-function: ease;    
+    -webkit-animation-timing-function: ease;
+ 
+    visibility: visible !important;         
+}
+ 
+@keyframes slideUp {
+    0% {
+        transform: translateY(100%);
+    }
+    50%{
+        transform: translateY(-8%);
+    }
+    65%{
+        transform: translateY(4%);
+    }
+    80%{
+        transform: translateY(-4%);
+    }
+    95%{
+        transform: translateY(2%);
+    }           
+    100% {
+        transform: translateY(0%);
+    }   
+}
+ 
+@-webkit-keyframes slideUp {
+    0% {
+        -webkit-transform: translateY(100%);
+    }
+    50%{
+        -webkit-transform: translateY(-8%);
+    }
+    65%{
+        -webkit-transform: translateY(4%);
+    }
+    80%{
+        -webkit-transform: translateY(-4%);
+    }
+    95%{
+        -webkit-transform: translateY(2%);
+    }           
+    100% {
+        -webkit-transform: translateY(0%);
+    }   
+}
+	
+	
+	
+	
+	
+	/*Animation show winow*/			
+.neiros__fadeIn{
+    animation-name: fadeIn;
+    -webkit-animation-name: fadeIn; 
+ 
+    animation-duration: 1s; 
+    -webkit-animation-duration: 1s;
+ 
+    animation-timing-function: ease-in-out; 
+    -webkit-animation-timing-function: ease-in-out;     
+ 
+    visibility: visible !important; 
+}
+ 
+@keyframes fadeIn {
+    0% {
+        transform: scale(0);
+        opacity: 0.0;       
+    }
+    60% {
+        transform: scale(1.1);  
+    }
+    80% {
+        transform: scale(0.9);
+        opacity: 1; 
+    }   
+    100% {
+        transform: scale(1);
+        opacity: 1; 
+    }       
+}
+ 
+@-webkit-keyframes fadeIn {
+    0% {
+        -webkit-transform: scale(0);
+        opacity: 0.0;       
+    }
+    60% {
+        -webkit-transform: scale(1.1);
+    }
+    80% {
+        -webkit-transform: scale(0.9);
+        opacity: 1; 
+    }   
+    100% {
+        -webkit-transform: scale(1);
+        opacity: 1; 
+    }       
+}
+
+.neiros__slideLeft{
+    animation-name: slideLeft;
+    -webkit-animation-name: slideLeft;  
+ 
+    animation-duration: 2s; 
+    -webkit-animation-duration: 2s;
+ 
+    animation-timing-function: ease-in-out; 
+    -webkit-animation-timing-function: ease-in-out;     
+ 
+    visibility: visible !important; 
+}
+ 
+@keyframes slideLeft {
+    0% {
+        transform: translateX(150%);
+    }
+    50%{
+        transform: translateX(-8%);
+    }
+    65%{
+        transform: translateX(4%);
+    }
+    80%{
+        transform: translateX(-4%);
+    }
+    95%{
+        transform: translateX(2%);
+    }           
+    100% {
+        transform: translateX(0%);
+    }
+}
+ 
+@-webkit-keyframes slideLeft {
+    0% {
+        -webkit-transform: translateX(150%);
+    }
+    50%{
+        -webkit-transform: translateX(-8%);
+    }
+    65%{
+        -webkit-transform: translateX(4%);
+    }
+    80%{
+        -webkit-transform: translateX(-4%);
+    }
+    95%{
+        -webkit-transform: translateX(2%);
+    }           
+    100% {
+        -webkit-transform: translateX(0%);
+    }
+}
+
+
+#neiros__lead_catcher_before_iframe .neiros__closet-icon-modal{
+    cursor: pointer;
+    z-index: 10;
+    position: absolute;
+    right: 9px;
+    left: auto;
+    width: 32px;
+    height: 33px;
+    top: 7px;
+    background: none;
+	}	
+
+#neiros__lead_catcher_before_iframe .neiros__closet-icon-modal img{
+	width:13px;
+	
+	}
+
+	/*#neiros__lead_catcher_before_iframe {
+    transition: .9s;
+    position: fixed !important;
+    left: 0px;
+    opacity: 1;
+    visibility: visible;
+    border-radius: 0px;
+    width: 100%;
+    padding-bottom: 20px;
+    height: 100%;
+    right: 0px;
+    padding-top: 0px;
+    bottom: 0px;
+    background-color: #FFFFFF;
+    top: 0px;
+    z-index: 2147483647;
+}
+*/
+
+	
+#neiros__lead_catcher_before_iframe	.neiros__copiright_new2{
+
+    position: absolute;
+    width: 100%;
+    bottom: -10px;
+    font-family: 'Roboto';
+    color: #000000;
+    font-size: 13px;
+    text-align: center;
+	}		
+#neiros__lead_catcher_before_iframe.mobile{
+	background:rgba(0,0,0,0.40) !important;
+	}
+#neiros__lead_catcher_before_iframe .neiros__closet-icon-modal.mobile{
+    cursor: pointer;
+    z-index: 200000000;
+    text-align: center;
+    display: block;
+    height: 40px;
+    width: 50%;
+    position: fixed;
+    right: 25%;
+    left: 25%;
+    top: auto;
+    bottom: 55px;
+	background:none !important;
+	}	
+#neiros__lead_catcher_before_iframe .neiros__closet-icon-modal.mobile2{
+    cursor: pointer;
+    z-index: 200000000;
+    text-align: center;
+    display: block;
+    height: 50px;
+    width: 50%;
+    position: fixed;
+    right: 25%;
+    left: 25%;
+    top: auto;
+    bottom: 28px;
+	}			
+#neiros__lead_catcher_before_iframe .neiros__closet-icon-modal.mobile img{
+	margin-left: 26px;
+    margin-top: 15px;
+    width: 14px;
+	}
+	
+	

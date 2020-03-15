@@ -1,0 +1,194 @@
+#neiros__tab_chart, #neiros__tab_callback{
+    display:none;}
+#neiros__tab_chart.active, #neiros__tab_callback.active{
+    display:block;}
+
+#neiros__tab_callback{
+    width:100%;
+}
+#neiros__tab_callback .neiros__callback_container, #neiros__tab_callback .neiros__callback_container_another_time{
+    padding-left: 36px;
+    padding-right: 36px;
+}
+
+#neiros__tab_callback .neiros__callback_h1{
+    font-size: 15px;
+    font-family: 'Roboto';
+    color:#000000;
+    text-align:left;
+    margin-bottom: 20px;
+}
+#neiros__tab_callback .neiros__callback_input{
+    min-height: 45px;
+    font-family: 'Roboto Light';
+    white-space: normal;
+    width: auto;
+    color:#000000;
+    min-width: 100%;
+    max-width: 100%;
+    resize: none;
+    flex-direction: initial;
+    box-sizing: border-box;
+    position: relative;
+    border: 2px solid #D1D1D1;
+    border-radius: 5px;
+    padding-left: 76px;
+    font-size: 16px;
+    padding-right:15px;
+}
+#neiros__tab_callback .neiros__callback_input::-webkit-input-placeholder {
+    color: #000000;
+}
+#neiros__tab_callback .neiros__callback_input::-moz-placeholder {
+    color: #000000;
+}
+
+#neiros__select_country, #neiros__select_country_2{
+    position: absolute;
+    width: 50px;
+    margin-top: -35px;
+    margin-left: 24px;
+}
+#neiros__btn_calcback, #neiros__btn_calcback_another{
+    font-family: 'Roboto';
+    text-transform:uppercase;
+    padding: 20px 10px 20px 10px;
+    border-radius: 30px;
+    text-align:center;
+    cursor:pointer;
+    margin: 0 auto;
+    width: 150px;
+    margin-top: 20px;
+    background: #00B9EE;
+    color: #FFFFFF;
+}
+#neiros__btn_calcback:hover, #neiros__btn_calcback_another:hover{
+    background: #03A7D5;
+}
+
+#neiros__countdown{
+    font-family: 'Roboto thin';
+    letter-spacing: 3px;
+    text-align: center;
+    margin-top: 11px;
+    font-size: 56px;}
+
+#neiros__chose_time{
+    font-family: 'Roboto Light';
+    color:#4E4E4E;
+    text-align:center;
+    margin-top:5px;
+    cursor:pointer;
+
+}
+
+#neiros__chose_time span{
+    border-bottom: 1px dashed;
+}
+.neiros__copyright{
+    position: absolute;
+    bottom: 26px;
+    text-align: center;
+    color: #9C9C9C;
+    font-family: 'Roboto Light';
+    font-size: 12px;
+}
+
+#neiros__tab_callback .neiros__datepicker, #neiros__tab_callback .neiros__timepicker{
+    width:45%;
+    float:left;
+
+    min-height: 45px;
+    font-family: 'Roboto Light';
+    white-space: normal;
+    color: #000000;
+    flex-direction: initial;
+    box-sizing: border-box;
+    position: relative;
+    border: 2px solid #D1D1D1;
+    border-radius: 5px;
+    padding-left: 15px;
+    font-size: 16px;
+    padding-right: 15px;
+
+}
+.neiros__word{
+    text-align: center;
+    font-family: 'Roboto Light';
+    padding-top: 12px;
+    float:left;
+    display:block;
+    width:10%;}
+.timepicker_wrap{
+    top: 51px !important;
+    left: auto !important;
+    right: 1px !important;
+}
+.arrow_top{
+    top: -10px !important;
+    right: 20px !important;
+    left: auto !important;
+}
+
+.squaredTwo input[type=checkbox] {
+    visibility: hidden;
+}
+
+
+.neiros__copyright div{
+    float:left;
+    padding-top: 2px;
+    padding-left: 6px;
+}
+.squaredTwo {
+    width: 15px;
+    height: 15px;
+    float: left;
+    margin: auto;
+    margin-left: 29px;
+    position: relative;
+}
+
+.squaredTwo label {
+    border-radius:5px;
+    cursor: pointer;
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: 0px;
+    top: 0px;
+    border:2px solid #E5E5E5;
+}
+
+.squaredTwo label:after {
+    opacity: 0;
+    content: '';
+    position: absolute;
+    width: 7px;
+    height: 3px;
+    background: transparent;
+    top: 3px;
+    left: 3px;
+    border: 3px solid #A4A4A4;
+    border-top: none;
+    border-right: none;
+
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.squaredTwo label:hover::after {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+    filter: alpha(opacity=30);
+    opacity: 0.3;
+}
+
+.squaredTwo input[type=checkbox]:checked + label:after {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: alpha(opacity=100);
+    opacity: 1;
+}
+

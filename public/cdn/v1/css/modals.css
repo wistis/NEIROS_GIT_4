@@ -1,0 +1,35 @@
+.cbu-modal {
+    overflow: auto;
+    background: rgba(0, 0, 0, .3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    justify-content: center;
+    align-items: flex-start;
+    display: flex;
+    transition: opacity 0.3s ease-in;
+    opacity: 0;
+    z-index: 1000;
+}
+.cbu-modal .wistisform{
+    position: static !important;
+    transform: none !important;
+}
+.cbu-modal--show {
+    opacity: 1;
+}
+.cbu-modal__wrapper {
+    transition: opacity 0.15s 0.1s ease-in;
+    opacity: 0;
+    transform: scale(0) translateY(0);
+}
+.cbu-modal--show .cbu-modal__wrapper {
+    transition: opacity 0.15s 0.1s ease-in, transform 0.4s cubic-bezier(0.93, 0.32, 0.9, 1.37);
+    opacity: 1;
+    transform: scale(1) translateY(50px);
+}
+.cbu-modal-content {
+    width: 100%;
+}

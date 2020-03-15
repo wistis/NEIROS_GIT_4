@@ -1,0 +1,235 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Чат</title>
+<link href="css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+
+
+
+
+ 
+<div id="neiros__panel_widget" class="" >
+<div class="neiros__header_pop">
+
+<div id="neiros__header_phone">+7 800 555 33 55</div>
+
+<div id="neiros__header_show_operator" style="display:none;">
+   
+    <img src="images/operator.JPG" class="neiros__operator">
+    <div class="neiros__operator-text">
+        <span>Александр</span>
+        Консультант
+        <div class="neiros__status_operator neiros__op_active"></div>
+        <div id="neiros__proces_writen_operator" style="display:none;"><img src="images/icons/icon-pancil.png" alt=""> Печатает ...</div>
+    </div>
+</div>
+    
+</div>
+<div class="neiros__all-servises">
+    <ul>
+        <li class="neiros__servis-phone"><img src="images/icons/icon-phone.png"></li>
+        <li class="neiros__servis-chat neiros__active_servis"><img src="images/icons/icon-chat.png"></li>
+        <li class="neiros__servis-lid"><img src="images/icons/icon-lid.png"></li>
+        <li class="neiros__servis-geo"><img src="images/icons/icon-geo.png"></li>
+        <li class="neiros__servis-socialpng"><img src="images/icons/icon-socialpng.png"></li>
+    </ul>
+</div>
+
+<div  id="neiros__talk_chat_box">
+    <div class="neiros__talk_chat">
+            <div class="neiros__talk_day">
+    <div id="neiros__operator_start_dialog">
+        <img src="images/operator.JPG" class="neiros__operator_start">
+        <div class="neiros__operator-text">
+        	<div id="neiros__status_operator_of_dialog"><div class="neiros__status_operator neiros__op_active"></div> Онлайн</div>
+            <span>Александр</span>
+            Консультант
+            
+        </div> 
+    </div>
+   	<div id="neiros__operator_text_dialog">
+    Добрый день, меня зовут Александр. 
+Буду рад вам помочь! Спросите меня о
+чем-нибудь :)
+    </div> 
+          
+            
+
+                
+                
+            </div>
+        </div>
+    </div>
+    
+ <div class="neiros__send--chart-form">
+ 	<textarea maxlength="1000"  autocomplete="off"  id="neiros__send--chart-form-input" placeholder="Ваше сообщение"></textarea>
+    <div id="neiros__send--chart-form_btn"></div>
+ </div>   
+    
+</div>
+
+<script>
+var matches;
+(function(doc) {
+   matches =
+      doc.matchesSelector ||
+      doc.webkitMatchesSelector ||
+      doc.mozMatchesSelector ||
+      doc.oMatchesSelector ||
+      doc.msMatchesSelector;
+})(document.documentElement);
+
+/*выбор услуги*/	 
+mass = [];
+mass.forEach.call( document.querySelectorAll('.neiros__all-servises li'), function(el) { el.addEventListener('click', function() {
+	div = document.querySelector("#neiros__panel_widget .neiros__active_servis");
+	classes = div.classList; 
+  	classes.remove("neiros__active_servis");
+	classes = el.classList; 
+  	classes.add("neiros__active_servis");
+	return false;
+
+ }, false);
+})
+
+/*Открыть чат*/
+mass.forEach.call(
+ document.querySelectorAll('.neiros__start_btn, .neiros__open__chart'), function(el) { el.addEventListener('click', function() {
+ 	div = document.querySelector(".neiros__start_btn");
+ 	classes = div.classList; 
+  	classes.add("neiros__start_btn_show");
+	list = document.querySelector(".neiros__start_btn img");
+	list.style.display = 'none';
+	list = document.querySelector("#neiros__panel_widget");
+	list.style.display = 'block';
+	list = document.querySelector("#neiros__chat_hello_window");
+	list.style.display = 'none';
+	return false;
+
+ }, false);
+}
+)
+
+/*Закрыть приветствующее окно*/
+mass.forEach.call( document.querySelectorAll('.neiros__closet__hello_window'), function(el) { el.addEventListener('click', function() {
+	list = document.querySelector("#neiros__chat_hello_window");
+	list.style.display = 'none';
+	return false;
+
+ }, false);
+})
+
+/*Отправить сообщение в чат пользователем*/
+mass.forEach.call( document.querySelectorAll('#neiros__send--chart-form_btn'), function(el) { el.addEventListener('click', function() {
+	list = document.querySelector("#neiros__send--chart-form-input");
+	var val = list.value;
+	add_comment(val,list);
+	
+
+ }, false);
+})
+
+  document.querySelector('#neiros__send--chart-form-input').addEventListener('keydown', function(e) {
+	  
+/*Оператор печатает запуск*/	  
+list = document.querySelector("#neiros__proces_writen_operator");
+ if (e.keyCode) {
+	list.style.display = 'block';
+	 }
+	 	  
+ if (e.keyCode === 13) {
+	list = document.querySelector("#neiros__send--chart-form-input");
+	var val = list.value;
+	add_comment(val,list);
+ }
+  });
+
+
+/*Считывание введенного текста пользователем*/
+function add_comment(val,list){
+	if(val === ''){
+		return false;}
+	else{
+		var now = new Date();
+ 		time = now.getHours()+':'+now.getMinutes() 
+		list.value = '';
+		list = document.querySelector("#neiros__header_phone");
+		list.style.display = 'none';
+		list = document.querySelector("#neiros__header_show_operator");
+		list.style.display = 'block';
+		
+		list = document.querySelector("#neiros__talk_chat_box .neiros__talk_chat .neiros__talk_day");
+		list.innerHTML = '<div class="neiros__talk_this_day"><div class="neiros__talk_currend_day">21.06.2018г.</div><div class="neiros__talk_text_operator_block"><div class="neiros__talk_text_operator"><div class="neiros__talk_time_comment">21:18</div>Добрый день, меня зовут Александр.Буду рад вам помочь! Спросите меня о чем-нибудь :)</div></div><div class="neiros__talk_text_client_block"><div class="neiros__talk_text_client"><div class="neiros__talk_time_comment">21:18</div>Добрый день, меня зовут Александр.Буду рад вам помочь! Спросите меня очем-нибудь :)</div></div><div class="neiros__day_end"></div></div><div class="neiros__talk_this_day"><div class="neiros__talk_currend_day">22.06.2018г.</div><div class="neiros__talk_text_operator_block"><div class="neiros__talk_text_operator"><div class="neiros__talk_time_comment">21:18</div>Добрый день, меня зовут Александр.Буду рад вам помочь! Спросите меня о чем-нибудь :)</div></div><div class="neiros__talk_text_client_block"><div class="neiros__talk_text_client"><div class="neiros__talk_time_comment">'+time+'</div>'+val+'</div></div></div>';
+		/*Оператор печатает убрать*/
+		list = document.querySelector("#neiros__proces_writen_operator");
+		list.style.display = 'none';
+		}	
+	}
+
+
+document.addEventListener('click', function(e) {
+   if ( matches.call( e.target, '.neiros__start_btn_show') ) {
+	div = document.querySelector(".neiros__start_btn");
+    classes = div.classList; 
+  	classes.remove("neiros__start_btn_show");
+	list = document.querySelector(".neiros__start_btn img");
+	list.style.display = 'block';
+	list = document.querySelector("#neiros__panel_widget");
+	list.style.display = 'none';
+	return false;
+   }
+}, false);
+
+/*Определение версии*/
+
+var params = window
+    .location
+    .search
+    .replace('?','')
+    .split('&')
+    .reduce(
+        function(p,e){
+            var a = e.split('=');
+            p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
+            return p;
+        },
+        {
+			
+			
+			}
+    );
+	
+if(params['mobile']){
+	list = document.querySelector("#neiros__panel_widget .neiros__all-servises");
+	list.style.display = 'none';
+	list = document.querySelector(".neiros__talk_chat");
+ 	classes = list.classList; 
+  	classes.add("mobile");
+	list = document.querySelector(".neiros__send--chart-form");
+ 	classes = list.classList; 
+  	classes.add("mobile");
+	list = document.querySelector(".neiros__send--chart-form textarea");
+ 	classes = list.classList; 
+  	classes.add("mobile");
+	list = document.querySelector("#neiros__send--chart-form_btn");
+ 	classes = list.classList; 
+  	classes.add("mobile");
+	list = document.querySelector("#neiros__send--chart-form_btn");
+ 	classes = list.classList; 
+  	classes.add("mobile");
+	}	
+
+	
+
+	
+	
+	
+</script>
+
+</body>
+</html>
