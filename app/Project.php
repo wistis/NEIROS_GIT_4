@@ -32,6 +32,9 @@ public function get_chat_users(){
 
 
    }
+public function getUserCompany(){
+       return $this->hasOne(Users_company::class,'id','my_company_id');
+}
 
     public static function boot()
 
@@ -55,5 +58,10 @@ public function get_chat_users(){
     public function region(){
        return $this->hasOne(MetrikaCurrentRegion::class,'neiros_visit','neiros_visit');
 
+    }
+
+    public function widget(){
+
+       return $this->hasOne(Widgets::class,'id','widget_id');
     }
 }

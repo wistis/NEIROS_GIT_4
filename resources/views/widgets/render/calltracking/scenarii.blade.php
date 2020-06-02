@@ -1,25 +1,26 @@
 <div class="row tab-pane " id="basic-tab3">
-
+<div class="col-md-12" style="margin-bottom:10px; text-align:right">
     <a class="btn btn-info text-semibold" onClick="edit_routing()"  >Добавить
-        сценарий</a>
+        сценарий</a></div>
     <div class="col-md-12">
         <fieldset>
             <div class="table-responsive">
-            <table class="table table-bordered">
-                <tr>
+            <table class="table ">
+              <thead>  <tr>
                    {{-- <td>Статус</td>--}}
-                    <td>Название</td>
-                    <td>Тип подмены</td>
-                    <td>Номеров</td>
+                    <th>Название</th>
+                    <th>Тип подмены</th>
+                    <th>Номеров</th>
                 {{--    <td>Точность</td>--}}
-                    <td>Звонков</td>
-                    <td>Дата создания</td>
-                    <td>Звонок на</td>
-                    <td>Действия</td>
-                    <td>Действия</td>
+                    <th>Звонков</th>
+                    <th>Дата создания</th>
+                    <th>Звонок на</th>
+                    <th>Действия</th>
+                    <th>Действия</th>
 
 
-                </tr>
+                </tr></thead>
+                <tbody>
                 @foreach($routes as $rout)
                     <tr id="idsr{{$rout->id}}">
                         {{--<td>
@@ -79,7 +80,7 @@
 
                     </tr>
                 @endforeach
-
+</tbody>
             </table></div>
         </fieldset>
     </div>
@@ -182,8 +183,14 @@
             type: "POST",
             url: '/asterisk_ajax/0',
             data: $("#create_routing_form").serialize(),
+			 beforeSend: function( ) {
+				 $('.add_scenarij').addClass('add_scenarij2');
+				 $('.add_scenarij').html('<i class="icon-spinner2 spinner position-left"></i>')
+				 
+				 },
             success: function (html1) {
-
+				$('.add_scenarij').removeClass('add_scenarij2');
+				$('.add_scenarij').html('Сохранить сценарий')
                 if(html1['error']==0){
                     /*mynotif('Успешно','Изменения успешно сохранены','success');*/ $('#WidgetModal3').modal('hide');
                 }

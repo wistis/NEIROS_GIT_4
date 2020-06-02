@@ -76,11 +76,13 @@ return 'ok';
 
     public function asterisk(Request $request)
     {
-Log::info('Колбек тайм'.time());
+Log::info('Колтрекинг начало'.time());
+
         $WidgetApiController = new WidgetApiController();
         $WidgetApiController->index($request);
         DB::table('widgets_phone')->where('input', $request->did)->increment('amout_call');
-
+        Log::info('Колтрекинг конец'.time());
+        Log::info(''.time());
         return 'ok';
     }
 

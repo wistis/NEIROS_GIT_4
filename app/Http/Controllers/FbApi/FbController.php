@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\FbApi;
 
 use App\Models\Fb\WidgetFbPage;
+use App\Models\Servies\ALpParam;
 use App\Widgets;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,6 +12,7 @@ use DB;
 use App\Project;
 use App\Http\Controllers\Api\WidgetApiController;
 use pimax\FbBotApp;
+use pimax\Messages\FileMessage;
 use pimax\Messages\Message;
 use pimax\Messages\MessageButton;
 use pimax\Messages\StructuredMessage;
@@ -33,8 +35,8 @@ class FbController extends Controller
     {
 
         $this->fb = new  Facebook([
-            'app_id' => 629941544445367,
-            'app_secret' =>'f76589abcb32b761cd02f39fcb72105b',
+            'app_id' => 271378743729008,
+            'app_secret' =>'8e61b7a9c1aa7b316ed0804b6730cf48',
         ]);
        /* if($this->getuser()==1) {dd(1);
             $this->fb = new  Facebook([
@@ -59,18 +61,19 @@ public function getuser(){
     public function get_url_for_token()
     {
 
-  if(auth()->user()->my_company_id==1){
+/*  if(auth()->user()->my_company_id==1){
 
       $permissions = ['email', 'manage_pages','pages_messaging' ,'instagram_basic','pages_show_list'];
       $loginUrl = $this->helper->getLoginUrl($_ENV['FB_CALLBACK'], $permissions);
       return '<a href="' . htmlspecialchars($loginUrl) . '" class="btn  " style="background: #4267B2;color: white;font-weight: bold" target="_blank">Продолжить с Facebook</a>';
-  }else{
+  }else{*/
         $permissions = ['email', 'manage_pages','pages_messaging' ];
         $loginUrl = $this->helper->getLoginUrl($_ENV['FB_CALLBACK'], $permissions);
         return '<a href="' . htmlspecialchars($loginUrl) . '" class="btn  " style="background: #4267B2;color: white;font-weight: bold" target="_blank">Продолжить с Facebook</a>';}
-    }
+   /* }*/
 
-    public function get_pages_from_token()
+    public function get_pages_from_token
+    ()
     {
  
         $response = $this->fb->get(
@@ -80,9 +83,23 @@ public function getuser(){
 
         $data = json_decode($response->getBody());
 
-        WidgetFbPage::where('widget_fb_id', $this->widget->id)->delete();
+
         for ($i = 0; $i < count($data->data); $i++) {
-            $model = new WidgetFbPage();
+            $model=  WidgetFbPage::where('fb_id',$data->data[$i]->id)->first();
+            if($model){
+             if($model->widget_fb_id!= $this->widget->id)  {
+                 $model->delete();
+                 $model = new WidgetFbPage();
+             }
+
+
+
+            }else{
+                $model = new WidgetFbPage();
+            }
+
+          /*'widget_fb_id', $this->widget->id*/
+
             $model->widget_fb_id = $this->widget->id;
             $model->my_company_id = $this->widget->my_company_id;
             $model->site_id = auth()->user()->get_site->id;
@@ -104,8 +121,8 @@ try {
 
             $model->save();
 
-             $this->fb->post(
-                '/'. $data->data[$i]->id.'/subscribed_apps',['subscribed_fields'=>'message_deliveries,messages,messaging_optins,messaging_postbacks'],
+          $m=   $this->fb->post(
+                '/'. $data->data[$i]->id.'/subscribed_apps',['subscribed_fields'=>'message_deliveries,messages,messaging_optins,messaging_postbacks,messaging_referrals' ],
                  $data->data[$i]->access_token
              );
 
@@ -216,28 +233,38 @@ if(isset($_REQUEST['hub_challenge'])){
 
 
     }
+public function torefferal($site, $widget, $widget_ok, $data, $datauser,$WidgetFbPage){
+    $provlp=ALpParam::where('utm',$data['referral']['ref'])->first();
+info('prov_refferal');
 
+    if($provlp){
+     /*  $this-> send_mess('', '', $data['sender']['id'], 'тест смв',$WidgetFbPage);*/
+
+        $bot = new FbBotApp($WidgetFbPage->token);
+info(json_encode($bot));
+        $message = new FileMessage($data['sender']['id'], $provlp->url);
+
+
+        $message_data['message']['attachment']['payload']['url'] =$provlp->url;
+
+
+
+        $res = $bot->send($message);
+info($res);
+
+
+    }
+
+}
     public function input_message($site, $widget, $widget_ok, $data, $datauser,$WidgetFbPage)
     {
 
-        $widget_vk_input_id = DB::table('widget_fb_input')->insertGetId([
-            'user_id' => $site->user_id,
-            'my_company_id' => $site->my_company_id,
-            'widget_id' => $widget->id,
-            'widget_vk_id' => $widget_ok->id,
 
-            //  'mess_id'=>$data_ev,
-            'date' => time(),
-            //'out'=>$data['object']['out']//,
-            'vk_user_id' => $data['sender']['id'],
-            // 'read_state'=>$data['object']['read_state'],
-            //   'title'=>$data['object']['title'],
-            'body' => $data['message']['text'],
-            'page_id' =>$WidgetFbPage->id,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-        ]);
-        /*(`id`, `my_company_id`, `user_id`, `widget_id`, `vk_user_id`, `first_name`, `created_at`, `updated_at`, `tema_id`)*/
+
+
+        Log::useFiles(base_path() . '/storage/logs/facebook.log', 'info');
+        info('inputmessage');
+        info($data);
         $prov_vk_user = DB::table('widget_fb_users')->where('vk_user_id', $data['sender']['id'])->first();
         if (!$prov_vk_user) {
             $data['user'] = $data['sender'];
@@ -250,24 +277,48 @@ if(isset($_REQUEST['hub_challenge'])){
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
         }
-        /*INSERT INTO `chat_with_client`(`id`, `my_company_id`, `widget_id`, `tip`, `input_user_id`, `mess`, `from`, `updated_at`, `created_at`, `out_user_id`, `read_input_user_status`, `read_out_user_status`) */
-        $mess_id = DB::table('chat_with_client')->insertGetId([
-            'widget_id' => $widget->id,
-            'my_company_id' => $site->my_company_id,
-            'tip' => 7,
-            'input_user_id' => $data['sender']['id'],
-            'mess' => $data['message']['text'],
-            'from' => 0,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-            'out_user_id' => 0,
-            'read_input_user_status' => 0,
-            'read_out_user_status' => 0,
-            'input_mess_id' => $widget_vk_input_id,
-            'tema_id' => $tema_id,
 
-        ]);
+        if(isset($data['referral'])){
+            return    $this-> torefferal($site, $widget, $widget_ok, $data, $datauser,$WidgetFbPage);
+        }
 
+
+if(isset($data['message'])) {
+    $widget_vk_input_id = DB::table('widget_fb_input')->insertGetId([
+        'user_id' => $site->user_id,
+        'my_company_id' => $site->my_company_id,
+        'widget_id' => $widget->id,
+        'widget_vk_id' => $widget_ok->id,
+
+        //  'mess_id'=>$data_ev,
+        'date' => time(),
+        //'out'=>$data['object']['out']//,
+        'vk_user_id' => $data['sender']['id'],
+        // 'read_state'=>$data['object']['read_state'],
+        //   'title'=>$data['object']['title'],
+        'body' => $data['message']['text'],
+        'page_id' => $WidgetFbPage->id,
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => date('Y-m-d H:i:s')
+    ]);
+
+            $mess_id = DB::table('chat_with_client')->insertGetId([
+                'widget_id' => $widget->id,
+                'my_company_id' => $site->my_company_id,
+                'tip' => 7,
+                'input_user_id' => $data['sender']['id'],
+                'mess' => $data['message']['text'],
+                'from' => 0,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+                'out_user_id' => 0,
+                'read_input_user_status' => 0,
+                'read_out_user_status' => 0,
+                'input_mess_id' => $widget_vk_input_id,
+                'tema_id' => $tema_id,
+
+            ]);
+        }
 
 
 
@@ -291,7 +342,10 @@ if(isset($_REQUEST['hub_challenge'])){
     }
 
     public function send_mess($apikey, $start_message, $user_id, $message,$page)
-    {Log::info('sendMess');
+    {
+
+
+        Log::info('sendMess');
     Log::info($user_id);
         $bot = new FbBotApp($page->token);
         return $bot->send(new Message($user_id, $message));

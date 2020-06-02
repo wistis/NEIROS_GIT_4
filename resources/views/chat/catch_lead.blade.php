@@ -67,7 +67,7 @@ function num2word($num, $words)
         <div class="neiros_all_block" id="neiros__pop_ups_position_2" >
             <div class="neiros__pop_ups_text">
                 Закажите обратный звонок
-                <div>Вы можете выбрать удобное время для связи с Вами!</div>
+                <div>Вы можете выбрать удобное время для связи с нами!</div>
             </div>
             <div class="neiros__pop_ups_callback_container">
                 <div class="neiros__pop_ups_data_block">
@@ -169,7 +169,7 @@ function num2word($num, $words)
         <div class="neiros_all_block" id="neiros__pop_ups_position_5" style="display:none">
             <div class="neiros__pop_ups_text">
                 Закажите обратный звонок
-                <div>Вы можете выбрать удобное время для связи с Вами!</div>
+                <div>Вы можете выбрать удобное время для связи с нами!</div>
             </div>
             <div class="neiros__pop_ups_callback_container">
                 <div class="neiros__pop_ups_data_block">

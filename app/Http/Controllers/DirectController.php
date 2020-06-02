@@ -107,6 +107,26 @@ class DirectController extends Controller
 
 
     }
+    public function provotchet_correct()
+    {
+
+
+        $widget_direct = DB::table('widget_direct')->
+        join('widgets', 'widgets.id', '=', 'widget_direct.widget_id')
+            ->where('widgets.status', 1)->select('widget_direct.id as wdid', 'widget_direct.my_company_id as myc', 'widget_direct.email as wemail', 'widget_direct.token as token', 'widgets.sites_id as site_id')->get();
+
+        foreach ($widget_direct as $wi_dir) {
+
+
+          $process = new Process('/opt/php72/bin/php artisan command:getpersonaldirectcorrect ' . $wi_dir->wdid . ' >44.txt', $_ENV['ARTISAN_PATH']);
+           $m = $process->start();
+
+
+        }
+        Log::info('DIR ' . $wi_dir->wdid);
+        return $wi_dir->wdid;
+
+    }
     public function provotchet()
     {
 
@@ -154,7 +174,7 @@ class DirectController extends Controller
         $wi_dir = DB::table('widget_direct')->
         join('widgets', 'widgets.id', '=', 'widget_direct.widget_id')
             ->where('widgets.status', 1)
-            ->where('widget_direct.id', 33)
+            ->where('widget_direct.id', 1)
             ->select('widget_direct.id as wdid', 'widget_direct.my_company_id as myc', 'widget_direct.email as wemail', 'widget_direct.token as token','widgets.sites_id as site_id')->first();
 
         $id=$wi_dir->wdid;
@@ -183,8 +203,8 @@ class DirectController extends Controller
 
 //--- Подготовка запроса -----------------------------------------------//
 
-        $DateFrom ='2019-12-01';
-        $DateTo = '2019-12-31';
+        $DateFrom ='2020-03-16';
+        $DateTo = '2020-03-22';
 
 
 
@@ -364,6 +384,442 @@ class DirectController extends Controller
 
 
     }
+    public function get_companyotchet_correct($wi_dir)
+    {$id=$wi_dir->wdid;
+        $is_first=0;
+
+
+        $email = $wi_dir->wemail;
+        $token = $wi_dir->token;
+
+        $my_company_id = $wi_dir->myc;
+if($my_company_id!=46){
+    return ;
+}
+
+        $company = DB::table('metrika_direct_company')->where('status', 1)->where('widget_direct_id', $wi_dir->wdid)->pluck('company')->toArray();
+
+//--- Входные данные ---------------------------------------------------//
+// Адрес сервиса Reports для отправки JSON-запросов (регистрозависимый)
+        $url = 'https://api.direct.yandex.ru/json/v5/reports';
+
+        $clientLogin = $email;
+        $time = time();
+
+        $lastdate = date('Y-m-d', $time);
+
+
+
+
+
+
+               $prov_ob_otchet = DB::connection('neiros_direct1')->table('direct_otchet_' . $my_company_id)
+                    ->where('first_otchet', 0)
+                   ->where('status', 200)
+                   ->where('status_upload', 1)
+
+                   ->where('DateTo', '<',date('Y-m-d'))->orderby('DateTo','asc')
+                   ->first();
+if(!$prov_ob_otchet) {
+    return '';
+}
+
+
+                   $isset_otchet = $prov_ob_otchet->id;
+
+                   $new_otchet = $prov_ob_otchet->id;
+                   $DateFrom = $prov_ob_otchet->DateFrom;
+                   $DateTo = $prov_ob_otchet->DateTo;
+
+        \DB::connection('neiros_direct1')->table('direct_otchet_' . $my_company_id)->where('id', $isset_otchet)->update([ 'status'=>'2']);
+
+
+
+
+        $params = [
+            "params" => [
+                "SelectionCriteria" => [
+                    "DateFrom" => $DateFrom,
+                    "DateTo" => $DateTo,
+                    'Filter' => [
+                        [
+                            'Field' => 'CampaignId',
+                            'Operator' => 'IN',
+                            'Values' => $company,
+
+                        ],[
+                            'Field' => 'Clicks',
+                            'Operator' => 'GREATER_THAN',
+                             'Values' => ["0"],
+
+                        ]
+                    ],
+                ],
+                "FieldNames" => ['CampaignId', 'CampaignName', 'AdGroupId', 'AdGroupName', 'Date', 'Cost', 'Criteria', 'Bounces',
+                    'Clicks',
+                    'Impressions',
+                    'Placement', 'AdId', 'AdNetworkType'],
+                "ReportName" => "myotchet_" . md5(implode('-', $company)) . '_' . $time,
+                "ReportType" => "CUSTOM_REPORT",
+                "DateRangeType" => "CUSTOM_DATE",
+                "Format" => "TSV",
+                "IncludeVAT" => "NO",
+                "IncludeDiscount" => "NO"
+            ]
+        ];
+
+        Log::info('DIR 3' . $new_otchet);
+// Преобразование входных параметров запроса в формат JSON
+        $body = json_encode($params);
+
+// Создание HTTP-заголовков запроса
+        $headers = array(
+            // OAuth-токен. Использование слова Bearer обязательно
+            "Authorization: Bearer $token",
+            // Логин клиента рекламного агентства
+            "Client-Login: $clientLogin",
+            // Язык ответных сообщений
+            "Accept-Language: ru",
+            // Режим формирования отчета
+            "processingMode: auto",
+            // Формат денежных значений в отчете
+            // "returnMoneyInMicros: false",
+            // Не выводить в отчете строку с названием отчета и диапазоном дат
+            // "skipReportHeader: true",
+            // Не выводить в отчете строку с названиями полей
+            // "skipColumnHeader: true",
+            // Не выводить в отчете строку с количеством строк статистики
+            // "skipReportSummary: true"
+        );
+
+// Инициализация cURL
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
+
+        /*
+        Для полноценного использования протокола HTTPS можно включить проверку SSL-сертификата сервера API Директа.
+        Чтобы включить проверку, установите опцию CURLOPT_SSL_VERIFYPEER в true, а также раскомментируйте строку с опцией CURLOPT_CAINFO и укажите путь к локальной копии корневого SSL-сертификата.
+        */
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+// curl_setopt($curl, CURLOPT_CAINFO, getcwd().'\CA.pem');
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HEADER, true);
+        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+// --- Запуск цикла для выполнения запросов ---
+// Если получен HTTP-код 200, то выводится содержание отчета
+// Если получен HTTP-код 201 или 202, выполняются повторные запросы
+        while (true) {
+
+            $result = curl_exec($curl);
+
+            if (!$result) {
+
+                echo('Ошибка cURL: ' . curl_errno($curl) . ' - ' . curl_error($curl));
+
+                break;
+
+            } else {
+
+                // Разделение HTTP-заголовков и тела ответа
+                $responseHeadersSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+                $responseHeaders = substr($result, 0, $responseHeadersSize);
+                $responseBody = substr($result, $responseHeadersSize);
+
+                // Получение кода состояния HTTP
+                $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+                // Извлечение HTTP-заголовков ответа
+                // Идентификатор запроса
+                $requestId = preg_match('/RequestId: (\d+)/', $responseHeaders, $arr) ? $arr[1] : false;
+                //  Рекомендуемый интервал в секундах для проверки готовности отчета
+                $retryIn = preg_match('/retryIn: (\d+)/', $responseHeaders, $arr) ? $arr[1] : 60;
+
+                if ($httpCode == 400) {
+
+                    echo "Параметры запроса указаны неверно или достигнут лимит отчетов в очереди<br>";
+                    echo "RequestId: {$requestId}<br>";
+                    echo "JSON-код запроса:<br>{$body}<br>";
+                    echo "JSON-код ответа сервера:<br>{$responseBody}<br>";
+
+
+                    break;
+
+                } elseif ($httpCode == 200) {
+
+                    echo "Отчет создан успешно<br>";
+                    echo "RequestId: {$requestId}<br>";
+
+                    $fle_name = $my_company_id.'_'.rand(1,1000).md5(implode('-', $company)) . '_' . $lastdate . ".tvs";
+
+
+
+                    DB::connection('neiros_direct1')->table('direct_otchet_' . $my_company_id)->where('id', $new_otchet)->update([  'comment' => 'Отчет получен', 'file_name' => $fle_name,'updated_at'=>date('Y-m-d H:i:s'),'status_upload'=>0,'status'=>3]);
+                    /*"my_otchet-".implode('-',$company)*/
+                    $fd = fopen(public_path() . '/directreport/' . $fle_name, 'w') or die("не удалось создать файл");
+                    $str = $responseBody;
+
+                    fwrite($fd, $str);
+                    fclose($fd);
+
+
+                    break;
+
+                } elseif ($httpCode == 201) {
+
+
+                    sleep($retryIn);
+
+                } elseif ($httpCode == 202) {
+
+                    sleep($retryIn);
+
+                } elseif ($httpCode == 500) {
+
+                    break;
+
+                } elseif ($httpCode == 502) {
+
+
+                    break;
+
+                } else {
+
+
+                    break;
+
+                }
+            }
+        }
+
+        curl_close($curl);
+
+
+    }
+    public function get_companyotchet_new_1($wi_dir)
+    {$id=12;
+        $is_first=0;
+
+
+        $email = '';
+        $token = 'AgAAAAAbmCJlAAVPR1y7g6Dm9kiWrbXdgoWqA8w';
+
+
+
+        $company = DB::table('metrika_direct_company')->where('status', 1)->where('widget_id', 98)->pluck('company')->toArray();
+
+//--- Входные данные ---------------------------------------------------//
+// Адрес сервиса Reports для отправки JSON-запросов (регистрозависимый)
+        $url = 'https://api.direct.yandex.ru/json/v5/reports';
+// OAuth-токен пользователя, от имени которого будут выполняться запросы
+
+// Логин клиента рекламного агентства
+// Обязательный параметр, если запросы выполняются от имени рекламного агентства
+        $clientLogin = $email;
+        $time = time();
+
+        $lastdate = date('Y-m-d', $time);
+
+//--- Подготовка запроса -----------------------------------------------//
+
+
+
+
+
+
+
+        $DateFrom = '2020-05-09';
+        $DateTo =  '2020-05-13';
+        $params = [
+            "params" => [
+                "SelectionCriteria" => [
+                    "DateFrom" => $DateFrom,
+                    "DateTo" => $DateTo,
+                    'Filter' => [
+                        [
+                            'Field' => 'CampaignId',
+                            'Operator' => 'IN',
+                            'Values' => [25976343],
+
+                        ],[
+                            'Field' => 'Clicks',
+                            'Operator' => 'GREATER_THAN',
+                            'Values' => ["0"],
+
+                        ]
+                    ],
+                ],
+                "FieldNames" => ['CampaignId', 'CampaignName', 'AdGroupId', 'AdGroupName', 'Date', 'Cost', 'Criterion', 'Bounces',
+                    'Clicks',
+                    'Impressions',
+                    'Placement', 'AdId', 'AdNetworkType'],
+                "ReportName" => "1958_222344myotchet_" . md5(implode('-', $company)) . '_' . $time,
+                "ReportType" => "CUSTOM_REPORT",
+                "DateRangeType" => "CUSTOM_DATE",
+                "Format" => "TSV",
+                "IncludeVAT" => "NO",
+                "IncludeDiscount" => "NO"
+            ]
+        ];
+
+      info($params);
+// Преобразование входных параметров запроса в формат JSON
+        $body = json_encode($params);
+
+// Создание HTTP-заголовков запроса
+        $headers = array(
+            // OAuth-токен. Использование слова Bearer обязательно
+            "Authorization: Bearer $token",
+            // Логин клиента рекламного агентства
+            "Client-Login: $clientLogin",
+            // Язык ответных сообщений
+            "Accept-Language: ru",
+            // Режим формирования отчета
+            "processingMode: auto",
+            // Формат денежных значений в отчете
+            // "returnMoneyInMicros: false",
+            // Не выводить в отчете строку с названием отчета и диапазоном дат
+            // "skipReportHeader: true",
+            // Не выводить в отчете строку с названиями полей
+            // "skipColumnHeader: true",
+            // Не выводить в отчете строку с количеством строк статистики
+            // "skipReportSummary: true"
+        );
+
+// Инициализация cURL
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
+
+        /*
+        Для полноценного использования протокола HTTPS можно включить проверку SSL-сертификата сервера API Директа.
+        Чтобы включить проверку, установите опцию CURLOPT_SSL_VERIFYPEER в true, а также раскомментируйте строку с опцией CURLOPT_CAINFO и укажите путь к локальной копии корневого SSL-сертификата.
+        */
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+// curl_setopt($curl, CURLOPT_CAINFO, getcwd().'\CA.pem');
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HEADER, true);
+        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+// --- Запуск цикла для выполнения запросов ---
+// Если получен HTTP-код 200, то выводится содержание отчета
+// Если получен HTTP-код 201 или 202, выполняются повторные запросы
+        while (true) {
+
+            $result = curl_exec($curl);
+
+            if (!$result) {
+
+                echo('Ошибка cURL: ' . curl_errno($curl) . ' - ' . curl_error($curl));
+
+                break;
+
+            } else {
+
+                // Разделение HTTP-заголовков и тела ответа
+                $responseHeadersSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+                $responseHeaders = substr($result, 0, $responseHeadersSize);
+                $responseBody = substr($result, $responseHeadersSize);
+
+                // Получение кода состояния HTTP
+                $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+                // Извлечение HTTP-заголовков ответа
+                // Идентификатор запроса
+                $requestId = preg_match('/RequestId: (\d+)/', $responseHeaders, $arr) ? $arr[1] : false;
+                //  Рекомендуемый интервал в секундах для проверки готовности отчета
+                $retryIn = preg_match('/retryIn: (\d+)/', $responseHeaders, $arr) ? $arr[1] : 60;
+
+                if ($httpCode == 400) {
+
+                    echo "Параметры запроса указаны неверно или достигнут лимит отчетов в очереди<br>";
+                    echo "RequestId: {$requestId}<br>";
+                    echo "JSON-код запроса:<br>{$body}<br>";
+                    echo "JSON-код ответа сервера:<br>{$responseBody}<br>";
+
+
+                    break;
+
+                } elseif ($httpCode == 200) {
+
+                    echo "Отчет создан успешно<br>";
+                    echo "RequestId: {$requestId}<br>";
+
+                    $fle_name = '12_wistis'.rand(1,1000).md5(implode('-', $company)) . '_' . $lastdate . ".tvs";
+
+
+
+
+
+
+
+
+                    /*"my_otchet-".implode('-',$company)*/
+                    $fd = fopen(public_path() . '/directreport_test/' . $fle_name, 'w') or die("не удалось создать файл");
+                    $str = $responseBody;
+
+                    fwrite($fd, $str);
+                    fclose($fd);
+                    /*$this->tsv_to_array_new(public_path() . '/directreport/' . $prov_first_otchet->file_name, array('header_row' => true, 'remove_header_row' => true), $wi_dir->myc, $prov_first_otchet->id,$wi_dir->site_id);*/
+
+                    break;
+
+                } elseif ($httpCode == 201) {
+
+                    echo "Отчет успешно поставлен в очередь в режиме офлайн<br>";
+                    echo "Повторная отправка запроса через {$retryIn} секунд<br>";
+                    echo "RequestId: {$requestId}<br>";
+
+                    sleep($retryIn);
+
+                } elseif ($httpCode == 202) {
+
+                    echo "Отчет формируется в режиме offline.<br>";
+                    echo "Повторная отправка запроса через {$retryIn} секунд<br>";
+                    echo "RequestId: {$requestId}<br>";
+
+                    sleep($retryIn);
+
+                } elseif ($httpCode == 500) {
+
+                    echo "При формировании отчета произошла ошибка. Пожалуйста, попробуйте повторить запрос позднее<br>";
+                    echo "RequestId: {$requestId}<br>";
+                    echo "JSON-код ответа сервера:<br>{$responseBody}<br>";
+
+                    break;
+
+                } elseif ($httpCode == 502) {
+
+                    echo "Время формирования отчета превысило серверное ограничение.<br>";
+                    echo "Пожалуйста, попробуйте изменить параметры запроса - уменьшить период и количество запрашиваемых данных.<br>";
+                    echo "RequestId: {$requestId}<br>";
+
+                    break;
+
+                } else {
+
+                    echo "Произошла непредвиденная ошибка.<br>";
+                    echo "RequestId: {$requestId}<br>";
+                    echo "JSON-код запроса:<br>{$body}<br>";
+                    echo "JSON-код ответа сервера:<br>{$responseBody}<br>";
+
+                    break;
+
+                }
+            }
+        }
+
+        curl_close($curl);
+
+
+    }
     public function get_companyotchet_new($wi_dir)
     {$id=$wi_dir->wdid;
         $is_first=0;
@@ -429,49 +885,49 @@ class DirectController extends Controller
 
 
 
-       if($is_first==0) {
-           $prov_first_otchet = DB::connection('neiros_direct1')->table('direct_otchet_' . $my_company_id)
-               ->where('first_otchet', 1)
-               ->where('status', 200)
-               ->first();
-           if ($prov_first_otchet) {
+        if($is_first==0) {
+            $prov_first_otchet = DB::connection('neiros_direct1')->table('direct_otchet_' . $my_company_id)
+                ->where('first_otchet', 1)
+                ->where('status', 200)
+                ->first();
+            if ($prov_first_otchet) {
 
-               $prov_ob_otchet = DB::connection('neiros_direct1')->table('direct_otchet_' . $my_company_id)
-                   ->where('first_otchet', 0)
-                   ->where('DateFrom', date('Y-m-d'))
-                   ->where('DateTo', date('Y-m-d'))
-                   ->first();
+                $prov_ob_otchet = DB::connection('neiros_direct1')->table('direct_otchet_' . $my_company_id)
+                    ->where('first_otchet', 0)
+                    ->where('DateFrom', date('Y-m-d'))
+                    ->where('DateTo', date('Y-m-d'))
+                    ->first();
 
-               if ($prov_ob_otchet) {
+                if ($prov_ob_otchet) {
 
-                   $isset_otchet = $prov_ob_otchet->id;
+                    $isset_otchet = $prov_ob_otchet->id;
 
-                   $new_otchet = $prov_ob_otchet->id;
-                   $DateFrom = $prov_ob_otchet->DateFrom;
-                   $DateTo = $prov_ob_otchet->DateTo;
+                    $new_otchet = $prov_ob_otchet->id;
+                    $DateFrom = $prov_ob_otchet->DateFrom;
+                    $DateTo = $prov_ob_otchet->DateTo;
 
-               } else {
-                   $DateFrom = date('Y-m-d');
-                   $DateTo = date('Y-m-d');
+                } else {
+                    $DateFrom = date('Y-m-d');
+                    $DateTo = date('Y-m-d');
 
-                   $new_otchet = DB::connection('neiros_direct1')->table('direct_otchet_' . $my_company_id)->insertGetId([
+                    $new_otchet = DB::connection('neiros_direct1')->table('direct_otchet_' . $my_company_id)->insertGetId([
 
-                       'name' => "myotchet_" . $time,
-                       'status' => 0,
-                       'DateFrom' => $DateFrom,
-                       'DateTo' => $DateTo,
-                       'created_at' => date('Y-m-d'),
-                       'updated_at' => date('Y-m-d'),
-                       'first_otchet' => 0,
-                       'status_upload' => 0,
+                        'name' => "myotchet_" . $time,
+                        'status' => 0,
+                        'DateFrom' => $DateFrom,
+                        'DateTo' => $DateTo,
+                        'created_at' => date('Y-m-d'),
+                        'updated_at' => date('Y-m-d'),
+                        'first_otchet' => 0,
+                        'status_upload' => 0,
 
-                   ]);
+                    ]);
 
-               }
+                }
 
 
-           }
-       }
+            }
+        }
         $params = [
             "params" => [
                 "SelectionCriteria" => [
@@ -486,7 +942,7 @@ class DirectController extends Controller
                         ],[
                             'Field' => 'Clicks',
                             'Operator' => 'GREATER_THAN',
-                             'Values' => ["0"],
+                            'Values' => ["0"],
 
                         ]
                     ],
@@ -673,7 +1129,34 @@ class DirectController extends Controller
 
 
     }
+    public function uploadfile_correct($id = null)
+    {
 
+        $wi_dir = DB::table('widget_direct')->
+        join('widgets', 'widgets.id', '=', 'widget_direct.widget_id')
+            ->where('widgets.status', 1)
+            ->where('widget_direct.id', $id)
+            ->select('widget_direct.id as wdid', 'widget_direct.my_company_id as myc', 'widget_direct.email as wemail', 'widget_direct.token as token','widgets.sites_id as site_id')->first();
+
+            $prov_first_otchets = DB::connection('neiros_direct1')->table('direct_otchet_' . $wi_dir->myc)->where('status', '=', 3)->get();
+            info('get11._'.$wi_dir->myc);
+foreach($prov_first_otchets as $prov_first_otchet){
+    info('get12._'.$wi_dir->myc);
+    DB::connection('neiros_direct1')->table('direct_otchet_' . $wi_dir->myc)->where('id', $prov_first_otchet->id)->update(['status_upload' => 4]);
+            info('correct direct not upload my_id' . $wi_dir->myc);
+            info('correct direct not upload' . $prov_first_otchet->id);
+            info('correct direct not upload' . $id);
+            if ($prov_first_otchet->file_name != '') {
+
+
+
+
+                $this->tsv_to_array_new_correct(public_path() . '/directreport/' . $prov_first_otchet->file_name, array('header_row' => true, 'remove_header_row' => true), $wi_dir->myc, $prov_first_otchet->id,$wi_dir->site_id);
+
+            }
+            }
+
+    }
     public function uploadfile($id = null)
     {
 
@@ -831,7 +1314,7 @@ info('start parsing direct '.$my_company_id);
         //return $data;
     }
 
-    function tsv_to_array_new($file, $args = array(), $my_company_id, $new_otchet,$site_id)
+    function tsv_to_array_new_correct($file, $args = array(), $my_company_id, $new_otchet,$site_id)
     {
         $debug = 1;
         $date_to_metrika=[];
@@ -879,6 +1362,97 @@ info('start parsing direct '.$my_company_id);
                     }
 
  
+                }
+                if ($str >1) {
+                    for($k=0;$k<count($line_data);$k++) {
+                        $data[$z][$header[$k]]=str_replace("\n",'',$line_data[$k]);
+                        if($header[$k]=='Date'){
+
+                            $date_to_metrika[$data[$z][$header[$k]]]=$data[$z][$header[$k]];
+                        }
+                 } $z++  ;
+
+
+
+                }
+                $str++;
+
+
+
+                if($z==1000){
+                    $this->insertTodirect($data,$my_company_id,$new_otchet,$site_id);
+                    $z=0;
+                }
+            }
+
+
+        }
+
+        fclose($file);
+        if($z>0){
+        $this->insertTodirect($data,$my_company_id,$new_otchet,$site_id);
+            }
+
+
+        DB::connection('neiros_direct1')->table('direct_otchet_' . $my_company_id)->where('id', $new_otchet)->update(['status_upload' => 5]);
+        //return $data;
+        try{
+    unlink($file);
+    }catch(\Exception $e){
+
+        }
+
+        
+
+    }
+    function tsv_to_array_new($file, $args = array(), $my_company_id, $new_otchet,$site_id)
+    {
+        $debug = 1;
+        $date_to_metrika=[];
+        DB::connection('neiros_direct1')->table('direct_otchet_parcer_' . $my_company_id)->where('otchet', $new_otchet)->delete();
+        //key => default
+        $fields = array(
+            'header_row' => true,
+            'remove_header_row' => true,
+            'trim_headers' => true, //trim whitespace around header row values
+            'trim_values' => true, //trim whitespace around all non-header row values
+            'debug' => false, //set to true while testing if you run into troubles
+            'lb' => "\n", //line break character
+            'tab' => "\t", //tab character
+        );
+
+        foreach ($fields as $key => $default) {
+            if (array_key_exists($key, $args)) {
+                $$key = $args[$key];
+            } else {
+                $$key = $default;
+            }
+        }
+
+        if (!file_exists($file)) {
+
+            $error = 'File does not exist.';
+
+            info($error);
+            return '';
+        }
+
+        $data = array();
+
+
+        $str = 0;$z=0;
+        if ($file = fopen($file, "r")) {
+            while (!feof($file)) {
+                $line = fgets($file);
+                # do same stuff with the $line
+                $line_data = explode("\t", $line);;
+                if ($str == 1) {
+                    for($m=0;$m<count($line_data);$m++) {
+                        $header[$m]=str_replace("\n",'',$line_data[$m]);
+
+                    }
+
+
                 }
                 if ($str >1) {
                     for($k=0;$k<count($line_data);$k++) {
@@ -972,8 +1546,9 @@ info('insert todirect. ' .$my_company_id);
 
 
 
+
     public function create_metrika_from_direct($date,$my_company_id,$site_id){
-if($my_company_id==59){
+if($my_company_id==99){
     print('NIKITENKO');
     info($date);
 
@@ -992,7 +1567,7 @@ foreach ($date as $key=>$val){
 
  /*   \DB::connection('neiros_metrica')->table('metrica_'.$my_company_id)->where('typ','Директ')->where('reports_date',$key)->delete();*/
 
-    $get_ids_metrika=NeirosUtm::where('neiros_p0','direct1')->pluck('neiros_visit');
+    $get_ids_metrika=NeirosUtm::where('neiros_p0','direct1')->where('site_id',$site_id)->pluck('neiros_visit');
 
     $result = DB::connection('neiros_metrica')->table('metrica_'.$my_company_id)
         ->where('site_id', $site_id)->where('reports_date', $key)->where('bot', 0)

@@ -11,7 +11,7 @@
 
             {{--Коллтрекинг--}}
 
-
+ 
 
 
             {{--Аналитика--}}
@@ -75,6 +75,7 @@
 
 
                 <li><a href="/setting/adminclient"><i class="icon-home4"></i><span><b>Администрирование</b></span></a></li>
+                <li><a href="/setting/bots"><i class="icon-home4"></i><span><b>Поисковые боты</b></span></a></li>
                 <li><a href="/setting/tarifs"><i class="fa fa-money" aria-hidden="true"></i><span><b>Тарифы1</b></span></a></li>
                 <li><a href="/setting/admintm"><i class="fa fa-envelope-open-o" aria-hidden="true"></i><span><b>Шаблоны Писем</b></span></a></li>
 

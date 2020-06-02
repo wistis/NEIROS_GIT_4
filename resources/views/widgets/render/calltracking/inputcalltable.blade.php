@@ -14,7 +14,7 @@
 @endphp
  
 @foreach($input_calls as $cal)
-    <tr>
+    <tr data-id="{{$cal->id}}" data-all="@json($cal)">
         <td>
             @if($cal->type==0) <i class="fa fa-phone"></i>@else <i class="fa fa-phone-volume"></i>@endif
             {{date('H:i:s d-m-Y',strtotime($cal->calldate))}}</td>
@@ -25,12 +25,16 @@
         <td>{{$cal->status}}
 
         </td>
-        <td><audio controls>
-                <source src="http://82.146.43.227/records/{{$cal->record}}" type="audio/mp3" >
-
-                http://82.146.43.227/records/{{$cal->record}}
-            </audio></td>
         <td>
+            @if($cal->uploaded==7)
+
+            <audio controls>
+                <source src=" https://drive.google.com/uc?authuser=0&id={{$cal->token}}&export=download" type="audio/mp3" >
+                https://drive.google.com/uc?authuser=0&id={{$cal->token}}&export=download
+            </audio>
+        @endif
+        </td>
+<?php /*?>        <td>
 
 
 
@@ -42,7 +46,7 @@
 
 
             @endif
-        </td>
+        </td><?php */?>
 
 
 

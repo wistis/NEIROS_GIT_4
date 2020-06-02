@@ -1,4 +1,4 @@
-<div class="user-item js-user-item js-button-users-close" data-tema="{{$tema->id}}"
+ <div class="user-item js-user-item js-button-users-close" data-tema="{{$tema->id}}"
      onclick="clickchattema(this)" id="temablockid{{$tema->id}}">
     <div class="user-item__wrap">
         {{--id="statusmark{{$tema->id}}"  @if($tema->status==0) style="display: none" @endif--}}

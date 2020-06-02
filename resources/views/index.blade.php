@@ -691,8 +691,10 @@ $date_year_active = 'active';
           <style>
           .table-chart-grafick{position: absolute;
     background: #fff;
-    right: 27px;
-    width: 300px;
+    right: 18px;
+    padding-right: 29px;
+    width: 340px;
+    width: 46%;
     top: 133px;
     z-index: 1;
 	    min-height: 300px;
@@ -885,7 +887,29 @@ float: left;
 ,
             function (start, end) {
                 $('.daterange-ranges span').html(start.format('DD-MM-Y') + ' - ' + end.format('DD-MM-Y'));
-                setdate(start.format('Y-MM-DD'), end.format('Y-MM-DD'));
+				
+               
+				
+				var date1 = new Date(start.format('Y-MM-DD'));
+
+var date2 = new Date(end.format('Y-MM-DD'));
+
+var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+
+var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+type = 'hours';
+if(diffDays <= 30){
+	type= 'day';
+	}
+if(diffDays > 30 && diffDays <= 120){
+	type= 'week';
+	}
+				
+if(diffDays > 120 && diffDays <= 368){
+	type= 'month';
+	}				
+	
+	 setdate(start.format('Y-MM-DD'), end.format('Y-MM-DD'),type);
 				dateFound(start.format('Y-MM-DD'), end.format('Y-MM-DD'));
             }
 
@@ -1279,6 +1303,8 @@ $('.itogo-chart').addClass('active');
 								color = '#FEDB5B'}
 							if(element.typ === 'Директ'){color = '#FF9F7F'}
 							if(element.typ === 'typein'){color = '#E061AE'}
+							if(element.typ === 'referral'){color = '#65DB7C'}
+							
 							
                         array.push({value:element.sdelka,name:element.typ, itemStyle:{color:color}});
 						procent = ((Number(element.sdelka)/all_sdelka)*100).toFixed(2)

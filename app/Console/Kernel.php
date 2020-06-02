@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
          Commands\ProveritEmails::class,
+         Commands\GetCallDuration::class,
          Commands\GetMetrikaKey::class,
          Commands\Socketio::class,
          Commands\Provdirectotchet::class,
@@ -32,6 +33,10 @@ class Kernel extends ConsoleKernel
          Commands\ListCall::class,
          Commands\GetDirectCompany::class,
          Commands\SendToGoogleDisk::class,
+         Commands\ReprovBot::class,
+         Commands\GetRecords::class,
+         Commands\ProvdirectotchetCorrect::class,
+         Commands\GetPersonalDirectCorrect::class,
     ];
 
     /**

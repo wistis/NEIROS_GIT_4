@@ -35,7 +35,7 @@
             <div class="modal-body">
             <div class="name-block-fixed name-block-fixed-integration">
            <div class="col-xs-12" >
-           <div class="h1-modal pos-left"><img src="/images/ads-integration.jpg"><span></span></div>
+           <div class="h1-modal pos-left"><img src="/images/aws-integration.jpg"><span></span></div>
            
             <input type="hidden" class="form-control" name="id" value="{{$widget_ad->id}}">
                             <input type="hidden" class="form-control" name="form_action"
@@ -69,6 +69,7 @@
 
 
                                 <div class="form-group col-md-12">
+                                
                                     <label class="col-lg-5 control-label"> 1. <a href="/set_token_adwords/{{$widget_ad->id}}" target="_blank" class="btn btn-info btn-sm">Получить токен
                                         </a></label>
                                     <div class="col-md-7">
@@ -110,15 +111,28 @@
                             </fieldset>
                         </div>
                         {{--Дополнительные поля--}}
-                        <div class="col-xs-12">
+                        <div class="col-xs-12" style="margin-top:25px;">
                             <div class="form-group">
-                                <label class="col-lg-3 control-label">Рекламные компании:</label>
-                                <div class="col-lg-9"><div><input type="checkbox" name="mft" id="mft"   value="1"> Отметить все
+                                <label class="col-xs-12 control-label">Рекламные компании:</label>
+                                <div class="col-xs-12"><div class="col-xs-12">
+                    
+                                
+                                <label class="add-number-new-checkbox label-dir">Отметить все
+                                                  <input type="checkbox" name="mft" id="mft"   value="1">
+                                                            <span class="checkmark"></span>
+                                                        </label>
+                                
                                     </div>
                                     @foreach($counters_ad as $counter)
 
-                                        <div><input type="checkbox" name="radiocounter[]"  class="dircheck" @if($counter->status==1) checked="checked"
-                                                    @endif value="{{$counter->company}}"  > {{$counter->company}} ({{$counter->name}})
+                                        <div class="col-xs-12">
+                                        
+                                        <label class="add-number-new-checkbox label-dir">    {{$counter->company}} ({{$counter->name}})
+                                                           <input type="checkbox" name="radiocounter[]"  class="dircheck" @if($counter->status==1) checked="checked"
+                                                    @endif value="{{$counter->company}}"  >
+                                                            <span class="checkmark"></span>
+                                                        </label>
+                                     
                                         </div>
                                     @endforeach
 

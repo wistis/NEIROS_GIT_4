@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
+use App\Models\SearchBot;
 use App\Http\Controllers\LeadPayController;
 use App\Http\Controllers\PayCompanyController;
 use App\Models\NeirosClientId;
 use App\Models\NeirosGaSid;
 use App\Models\NeirosMetricaSid;
 use App\Models\NeirosUtm;
+use App\Models\SearchToCpc;
 use App\Models\Servies\BlackListNeirosIds;
 use App\Models\Servies\CityIp;
 use App\Models\SrcCompact;
@@ -549,7 +550,7 @@ foreach ($canals as $canal){
 
             $MetricaCurrent->setTable('metrica_' . $widget->my_company_id);
 
-            $metrika = $MetricaCurrent->where('olev_phone_track', $request->did)->orderby('id', 'desc')->first();
+            $metrika = $MetricaCurrent->where('olev_phone_track', $request->did)->orderby('id', 'desc')->where('created_at','>',date('Y-m-d H:i:s',(time()-900)))->first();
             if ($metrika) {
                 $hash = $metrika->neiros_visit;
             } else {
@@ -1548,7 +1549,7 @@ if($all_class_replace[$k]->ar_class_replace==''){
     public function isBot_y($ua)
     {
         /* Эта функция будет проверять, является ли посетитель роботом поисковой системы */
-        $bots = array('YandexBot', 'YandexBot');
+        $bots = array('YandexBot', 'YandexBot','YandexMobileBot');
         foreach ($bots as $bot) {
             if (isset($ua)) {
                 if (stripos($ua, $bot) !== false) {
@@ -1567,7 +1568,20 @@ if($all_class_replace[$k]->ar_class_replace==''){
     public function isBot_g($ua)
     {
         /* Эта функция будет проверять, является ли посетитель роботом поисковой системы */
-        $bots = array('Googlebot', 'Googlebot','AdsBot-Google');
+        $bots = array('Googlebot', 'Googlebot','AdsBot-Google','APIs-Google (+https://developers.google.com/webmasters/APIs-Google.html)','Mediapartners-Google','Mozilla/5.0 (Linux; Android 5.0; SM-G920A) AppleWebKit (KHTML, like Gecko) Chrome Mobile Safari (compatible; AdsBot-Google-Mobile; +http://www.google.com/mobile/adsbot.html)','Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1 (compatible; AdsBot-Google-Mobile; +http://www.google.com/mobile/adsbot.html)','AdsBot-Google (+http://www.google.com/adsbot.html)','Googlebot-Image/1.0','Googlebot-News','Googlebot-Video/1.0',
+            'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+            'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+            'Googlebot/2.1 (+http://www.google.com/bot.html)',
+            '(compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+            'Mediapartners-Google',
+            'AdsBot-Google-Mobile-Apps',
+            'FeedFetcher-Google; (+http://www.google.com/feedfetcher.html)',
+            'Google-Read-Aloud',
+            'google-speakr',
+            'DuplexWeb-Google',
+            'Google Favicon',
+
+            );
         foreach ($bots as $bot) {
             if (isset($ua)) {
                 if (stripos($ua, $bot) !== false) {
@@ -1586,7 +1600,7 @@ if($all_class_replace[$k]->ar_class_replace==''){
     public function isBot_all($ua)
     {
         /* Эта функция будет проверять, является ли посетитель роботом поисковой системы */
-        $bots = array('Googlebot', 'Googlebot', 'YandexBot');
+        $bots =SearchBot::pluck('name')->toArray();
         foreach ($bots as $bot) {
             if (isset($ua)) {
                 if (stripos($ua, $bot) !== false) {
@@ -1607,7 +1621,7 @@ if(isset($input_data['neiros'])){
 $neiros_array=explode('_',$input_data['neiros']);
 if(count($neiros_array)>0){
     $utm=new NeirosUtm();
-    for ($i=0;$i<5;$i++) {
+    for ($i=0;$i<=5;$i++) {
 if(isset($neiros_array[$i])) {
     $utm->{'neiros_p' . $i} = trim($neiros_array[$i],'"');
 }
@@ -1961,11 +1975,14 @@ $typ2=$typ;
         $MetricaCurrent->fd = $current_add->fd;
         $MetricaCurrent->ep = $current_add->ep;
         $MetricaCurrent->rf = $current_add->rf;
+        $get_string=SearchToCpc::iscps($current_add->ep,$typ2,$src) ;
+
+
         $MetricaCurrent->neiros_visit = $neiros_visit;
-        $MetricaCurrent->typ = $typ2;
+        $MetricaCurrent->typ = $get_string['typ'];
         //$MetricaCurrent->osn_typ2 = $typ;
         $MetricaCurrent->mdm = $current->mdm;
-        $MetricaCurrent->src = $src;
+        $MetricaCurrent->src =  $get_string['src'];
         $MetricaCurrent->src_old = $current->src;
         $MetricaCurrent->cmp = $current->cmp;
         $MetricaCurrent->cnt = $current->cnt;

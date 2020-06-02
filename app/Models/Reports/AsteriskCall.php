@@ -9,5 +9,9 @@ class AsteriskCall extends Model
 
     protected $table='asterisk_calls';
 
+public function get_audio(){
 
+
+
+}
 }

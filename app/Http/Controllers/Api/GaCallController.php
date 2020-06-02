@@ -197,7 +197,8 @@ if($tip!=12){
 
     public function get_data_from_webhook($data)
     {
-        Log::useFiles(base_path() . '/storage/logs/GACALL.log', 'info');
+        Log::useFiles(base_path() . '/storage/logs/GACALL11.log', 'info');
+        info('310588 '.time());
         sleep(2);
         info('Data from web 1');
         info($data);

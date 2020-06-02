@@ -6,9 +6,10 @@ use App\Field_tip;
 use App\Http\Controllers\Api\WidgetApiController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompanyController;
+use App\Models\Reports\AsteriskCall;
 use App\Models\Servies\BlackListNeirosIds;
 use App\Models\WidgetName;
-use App\Models\Widgets\WidgetVkUsers;
+use App\Models\Widgets\WidgetFbUsers;
 use App\Project;
 use App\Project_field;
 use App\Project_log;
@@ -333,7 +334,7 @@ if($item->get_widget_info->tip==2){
     if(($item->sub_widget=='callback')||($item->sub_widget=='callback_later')||($item->sub_widget=='callback_form')||($item->sub_widget=='form_callback')){
 
         if(is_null($item->callback_client)){
-        $data_out[date('Y-m-d',strtotime($item->created_at))][$i]['content2']='<br>'.$this->get_audio_callback($item->call_back_random_id);}else{
+        $data_out[date('Y-m-d',strtotime($item->created_at))][$i]['content2']='<br>'.$this->get_audio_callback_new($item->call_back_random_id,$item->callback_client);}else{
             $data_out[date('Y-m-d',strtotime($item->created_at))][$i]['content2']='<br>'.$this->get_audio_callback_new($item->call_back_random_id,$item->callback_client);
         }
 
@@ -758,9 +759,135 @@ $f=explode('|',$keyword);
         }
 
 
+    }/*https://cloud.neiros.ru/ajax/get_client_info*/
+    public function get_audio_comment($id){
+$pr=Project:: where('call_back_random_id',$id)->whereNotNull('callback_client')->first();
+if($pr){
+    $AB=$pr->callback_client;
+    $status_call['CANCEL'] = 'Вызов отменен';
+    $status_call['ANSWER'] = 'Отвечено';
+    $status_call['NO ANSWER'] = 'Без ответа. Пропущенный вызов.';
+    $status_call['NO ANSWER'] = 'Без ответа. Пропущенный вызов';
+    $status_call['ANSWERED'] = 'Отвечено';
+    $status_call['NOANSWER'] = 'Без ответа. Пропущенный вызов';
+    $status_call['CONGESTION'] = 'Канал перегружен';
+    $status_call['CHANUNAVAIL'] = 'Канал недоступен';
+    $status_call['BUSY'] = 'Занято';
+    $atatus_succesno = ['BUSY', 'CHANUNAVAIL', 'CONGESTION', 'NOANSWER', 'NO ANSWER'];
+    $status='';
+    if ($AB == 'A') {
+        //Звоним клиенту
+        $audio_client = DB::connection('asterisk')->table('callback_calls')->where('callback_id', $id)->where('shoulder', $AB)->orderby('id', 'desc')->first();;
+        if (!$audio_client) {
+            $data['client']= 'ошибка';
+            $data['project_id']=$pr->id;
+            $data['operator']=NULL;
+            return $data;
+        }
+        $status.='Клиент - ('. $status_call[$audio_client->disposition].') ,';
+
+        $audio_managet = DB::connection('asterisk')->table('callback_calls')->where('callback_id', $id)->where('shoulder', 'B')->orderby('id', 'desc')->first();;
+        if (!$audio_managet) {
+            $data['client']= $status_call[$audio_client->disposition];
+
+            $data['project_id']=$pr->id;
+            $data['operator']=NULL;
+            return $data;
+        }
+
+
+
+
+
+        $data['client']= $status_call[$audio_client->disposition];
+        $data['operator']=$status_call[$audio_managet->disposition];
+        $data['project_id']=$pr->id;
+
+        return $data;
     }
+
+    if ($AB == 'B') {
+        //Звоним менеджеру
+
+        $status='';
+
+        $audio_managet = DB::connection('asterisk')->table('callback_calls')->where('callback_id', $id)->where('shoulder', 'A')->orderby('id', 'desc')->first();;
+
+        if (!$audio_managet) {
+            $data['client']= NULL;
+            $data['project_id']=$pr->id;
+            $data['operator']='ошибка';
+            return $data;
+        }
+
+        $audio_client = DB::connection('asterisk')->table('callback_calls')->where('callback_id', $id)->where('shoulder', 'B')->orderby('id', 'desc')->first();;
+        if (!$audio_client) {
+
+
+            $data['client']= NULL;
+            $data['project_id']=$pr->id;
+            $data['operator']=$status_call[$audio_managet->disposition];
+            return $data;
+
+        }
+
+
+
+
+        $data['client']= $status_call[$audio_client->disposition];
+        $data['project_id']=$pr->id;
+        $data['operator']=$status_call[$audio_client->disposition];
+        return $data;
+
+    }
+
+
+}
+
+
+        $data['client']= NULL;
+        $data['project_id']=NULL;
+        $data['operator']=NULL;
+        return $data;
+return $data;
+
+    }
+
     public function get_audio_callback_new($id,$AB)
     {
+
+
+
+        $audio2=AsteriskCall::where('my_company_id',auth()->user()->my_company_id)->where('unique_id', $id)->first();
+if(!$audio2){
+    return'';
+}
+        $textm='';
+        if(($audio2->comment_op=='Занято')&&($audio2->comment_cl=='Занято')){
+            $textm='Клиент сбросил звонок';
+        }
+        if(($audio2->comment_op=='')&&($audio2->comment_cl=='Занято')){
+            $textm='Оператор сбросил звонок';
+        }
+        if(($audio2->comment_op=='Без ответа. Пропущенный вызов')&&($audio2->comment_cl=='Без ответа. Пропущенный вызов')){
+            $textm='Клиент не отвечает';
+        } if(($audio2->comment_op=='Занято')&&($audio2->comment_cl=='')){
+            $textm='Оператор не отвечает';
+        }if(($audio2->comment_op=='Отвечено')&&($audio2->comment_cl=='Отвечено')){
+            $textm='Звонок состоялся';
+        }
+        if($audio2->uploaded==7) {
+
+
+            return ' <audio controls>
+                <source src=" https://drive.google.com/uc?authuser=0&id='.$audio2->token.'&export=download" type="audio/mp3" >
+                https://drive.google.com/uc?authuser=0&id='.$audio2->token.'&export=download
+            </audio>'. $textm; ;/*' Оператор:'.$audio2->comment_op.', Клиент:'.$audio2->comment_cl.*/
+        }else{
+
+
+            return $textm;///' 2Оператор:'.$audio2->comment_op.', Клиент:'.$audio2->comment_cl.;
+        }
 
         $numbers = Widgets_phone::pluck('input')->toArray();
 
@@ -811,11 +938,6 @@ $f=explode('|',$keyword);
             }
 return $status;
         }
-
-
-
-
-
 
         if ($AB == 'B') {
             //Звоним менеджеру
@@ -870,6 +992,11 @@ return $status;
 return '';
     }
     public function get_audio_callback($id){
+
+
+
+
+
 
 $numbers=Widgets_phone::pluck('input')->toArray();
 
@@ -966,36 +1093,20 @@ if(in_array($audio->aon,$numbers)){
     public function get_audio($id)
     {
 
-        $status_call['CANCEL']='Вызов отменен';
-        $status_call['ANSWER']='Отвечено';
 
-        $status_call['NO ANSWER']='Без ответа. Пропущенный вызов';
-        $status_call['ANSWERED']='Отвечено';
-        $status_call['NOANSWER']='Без ответа. Пропущенный вызов';
-        $status_call['CONGESTION']='Канал перегружен';
-        $status_call['CHANUNAVAIL']='Канал недоступен';
-        $status_call['BUSY']='Занято';
+$audio2=AsteriskCall::where('my_company_id',auth()->user()->my_company_id)->where('unique_id', $id)->first();
+if($audio2) {
+    if ($audio2->uploaded == 7) {
 
-$atatus_succesno=['BUSY','CHANUNAVAIL','CONGESTION','NOANSWER','NO ANSWER'];
-        $audio = DB::connection('asterisk')->table('calls')->where('uniqueid', $id)->orderby('id', 'desc')->first();   
-        if ($audio) {
-       if(isset($status_call[$audio->disposition])) {
-           $inf=$status_call[$audio->disposition];
-       }  else{
-           $inf=''.$audio->disposition;
-       }
-if(in_array($audio->disposition,$atatus_succesno)){
-    return $inf  ;
-}else {
-    return '<audio controls>
- <source src="http://82.146.43.227/records/' . date('Y', strtotime($audio->calldate)) . '/' . date('m', strtotime($audio->calldate)) . '/' . date('d', strtotime($audio->calldate)) . '/' . $audio->record_file . '.mp3" type="audio/mp3" >
 
-                        
-                    </audio>' . $inf  ;
+        return ' <audio controls>
+                <source src=" https://drive.google.com/uc?authuser=0&id=' . $audio2->token . '&export=download" type="audio/mp3" >
+                https://drive.google.com/uc?authuser=0&id=' . $audio2->token . '&export=download
+            </audio>' . $audio2->status;
+    } else {
+        return $audio2->status;
+    }
 }
-        }
-        /*http://82.146.43.227/records/{{date('Y',strtotime($cal->calldate))}}/{{date('m',strtotime($cal->calldate))}}/{{date('d',strtotime($cal->calldate))}}/{{$cal->record_file}}.mp3*/
-
     }
 
     public function project_vid(Request $request)

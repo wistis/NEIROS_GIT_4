@@ -509,7 +509,7 @@ $date_year_active = 'active';
                           <div class="col-md-12" style="padding-left:0px; padding-right:0px; padding-top:30px;">
 
 <div id="preloader"  class="col-xs-12 text-center" style=" display:block; padding-top:30px;
-padding-bottom:30px;"><i style="color:#00BAF0" class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>
+padding-bottom:30px;"><?php /*?><i style="color:#00BAF0" class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><?php */?><i class="icon-spinner2 spinner position-left"></i></div>
 
 <div class='table-responsive ' style="display:none;">
                         <table class="table table-bordered table-hover datatable-highlight" id="analytics-table">
@@ -639,7 +639,7 @@ language:{
             render: function(data, type, row, meta) {
 			src = row.typ
 			icon = '<i class="fa fa-plus" data-lvl="1"  data-type="'+row.typ+'" aria-hidden="true"></i>'
-			if(row.typ == 'organic' || row.typ == 'utm'){
+			if(row.typ == 'organic' ){
 				src = 'searh'
 				}
 			if(row.typ == 'Директ'){
@@ -659,16 +659,18 @@ language:{
 				
 			/*	icon = ''*/
 				}	
-				
+			stl = '';
 						
-			
+			if(row.typ == 'cpc' || row.typ == 'social' ){
+				stl = 'style="filter: invert(41%) sepia(13%) saturate(4%) hue-rotate(337deg) brightness(94%) contrast(86%);"';	
+				}
 								
 					
 					if(row.typ == 'typein'){
-				data = '<div class="more-data"><img src="/images/icon/'+src+'.ico">'+name+'<i style="display:none" class="fa fa-spinner fa-spin  fa-fw"></i>'
+				data = '<div class="more-data"><img '+stl+' src="/images/icon/SVG/all/'+src+'.svg">'+name+'<i style="display:none" class="fa fa-spinner fa-spin  fa-fw"></i>'
 						}
 						else{
-							data = '<div class="more-data"><i style="display:none" class="fa fa-minus" aria-hidden="true"></i> '+icon+'<img src="/images/icon/'+src+'.ico">'+name+'<i style="display:none" class="fa fa-spinner fa-spin  fa-fw"></i>'
+							data = '<div class="more-data"><i style="display:none" class="fa fa-minus" aria-hidden="true"></i> '+icon+'<img '+stl+' src="/images/icon/SVG/all/'+src+'.svg">'+name+'<i style="display:none" class="fa fa-spinner fa-spin  fa-fw"></i>'
 							}
 					 return data;
                 }
@@ -964,9 +966,7 @@ function format ( d ) {
 			  typ_rrr = '/reports_table_direct/';
 			 }
 			 
-				if(Number(lvl) > 1){
-			type = typ;
-			} 
+
 		 $.ajax({
                 type: "get",
                 url: typ_rrr + id,

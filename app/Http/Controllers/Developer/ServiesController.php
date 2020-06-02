@@ -56,7 +56,7 @@ class ServiesController extends Controller
            return   $this->datata();
               break;
           case 3:
-              return   $this->reprow_direct(40,40);
+              return   $this->reprow_direct(12,8);
               break;
 
           case 4:
@@ -69,17 +69,17 @@ class ServiesController extends Controller
 
 
           case 6:
-              return   $this->prov_direct(40);
+              return   $this->prov_direct(12);
               break;
           case 7:
               return $this->reprt(121);
           case 8:
               return $this->m7();
               case 9:
-              return $this->tsv_to_array(public_path().'/directreport_test/2019-01-01.tvs');
+              return $this->tsv_to_array(public_path().'/directreport_test/2020-03-22-11.tvs');
           case 10:
              $go=new GoogleUploadController();
-             $go->upload_file_from_server();
+          return    $go->set_permis();
 
               break;
       }
@@ -144,7 +144,7 @@ dd($error);
         }
 
         $row = 1;
-        $rowm = -2;dd(count($lines));
+        $rowm = -2;
         foreach ($lines as $line) {
             $row++;
             if ($row > 2) {
@@ -188,7 +188,7 @@ dd($error);
         if ($debug) {
             echo '<pre>' . print_r($data, true) . '</pre>';
         }
-dd($data);
+ dd( count($data));
         for ($ih = 0; $ih < count($data); $ih++) {
 
 
@@ -274,19 +274,19 @@ public function prov_adwords($id){
 
 exit();*/
 //widget_direct 44
-$id=44
+$id=12
 ;      $DirectController=new DirectController();
 
       try {
 
 
-          $DirectController->get_companyotchet_new($id);
+          $DirectController->get_companyotchet_new_1($id);
 
       }catch (\Exception $e){
        dd($e);
       }
 
-
+dd(2);
       try {
 
           info('starts');

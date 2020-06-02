@@ -17,13 +17,49 @@
 
                     <div class="col-xs-3 img-avatar">
 
-                            @if((isset($user))&&($user->image!=''))
+<!--                            @if((isset($user))&&($user->image!=''))
                             <span class="user-avatar">  <img src="/user_upload/user_logo/{{$user->image}}"></span>
 
                             @else
                             <span class="user-avatar">  <img src="/global_assets/images/icon/user/user.svg"></span>
                             @endif
-<input type="file" name="image">
+<input type="file" name="image">-->
+
+                                    
+                             <img class="i-img-hover" data-alt-src="https://cloud.neiros.ru/global_assets/images/icon/user/i-user-hover.png"
+                                    src="https://cloud.neiros.ru/global_assets/images/icon/user/i-user.png" />
+                                    
+                                    
+                                    
+                                    <div class="i-user-prev-block">
+                                    
+                                     <img class="i-close" data-alt-src="https://cloud.neiros.ru/global_assets/images/icon/user/i-close-hover.png"
+                                    src="https://cloud.neiros.ru/global_assets/images/icon/user/i-close.png" />
+                                    
+                                 
+                                   
+                                    <img class="i-icon-prew" src="https://cloud.neiros.ru/global_assets/images/icon/user/i-user-prev.png" alt="">
+                                    <div class="i-icon-text">
+                                    Можно загрузить картинку в
+                                    формате png, jpg и gif. Размеры не
+                                    меньше 200 × 200 точек, объём
+                                    файла не больше 7 МБ.
+                                    </div>
+                                    
+                                    <button type="button" id="i-ava-save" class="btn btn-primary s-ava-save  i-ava-btn">Сохранить
+                                    </button>
+                                    
+                                        <div class="i-user-prev">
+                                        
+                                        
+                                        
+                                            <div class="input i-input">
+                                                <input name="input" id="file" type="file">
+                                            </div>
+                                        </div>
+                                    </div>
+
+					
 
                     </div>
                     <div class="col-xs-9 user-description">
@@ -227,3 +263,90 @@
     <!-- Футер модального окна -->
 
 </div>
+
+
+
+
+
+<script>
+
+
+var sourceSwap = function () {
+        var $this = $(this);
+        var newSource = $this.data('alt-src');
+        $this.data('alt-src', $this.attr('src'));
+        $this.attr('src', newSource);
+    }
+
+
+
+    $(function () {
+        $('.i-img-hover').hover(sourceSwap, sourceSwap);
+    });
+
+
+
+
+    $(function () {
+        $('.i-close').hover(sourceSwap, sourceSwap);
+    });	
+
+
+
+	 
+
+
+$('.i-img-hover').click(function(){
+  $('.i-user-prev-block').show();
+});
+
+
+$('.i-close').click(function(){
+  $('.i-user-prev-block').hide();
+});
+
+
+
+
+$(function(){
+	var container = $('.i-user-prev'), inputFile = $('#file'), img, btn, txt = 'Загрузить изображение', txtAfter = 'Изображение загружено';
+			
+	if(!container.find('#upload').length){
+		container.find('.input').append('<input type="button" value="'+txt+'" id="upload">');
+		btn = $('#upload');
+		container.prepend('<img src="" class="hidden" alt="Uploaded file" id="uploadImg" width="100">');
+		img = $('#uploadImg');
+	}
+			
+	btn.on('click', function(){
+		img.animate({opacity: 0}, 300);
+		inputFile.click();
+	});
+
+	inputFile.on('change', function(e){
+		container.find('label').html( inputFile.val() );
+		
+		var i = 0;
+		for(i; i < e.originalEvent.srcElement.files.length; i++) {
+			var file = e.originalEvent.srcElement.files[i], 
+				reader = new FileReader();
+
+			reader.onloadend = function(){
+				img.attr('src', reader.result).animate({opacity: 1}, 700);
+			}
+			reader.readAsDataURL(file);
+			img.removeClass('hidden');
+		}
+		
+		btn.val( txtAfter );
+	});
+});
+ 
+
+
+
+
+</script>
+
+
+

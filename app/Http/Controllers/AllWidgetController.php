@@ -7,6 +7,7 @@ use App\Models\Chat\WidgetsChatMessRule;
 use App\Models\Chat\WidgetsChatUrlOperatorNew;
 use App\Models\Fb\WidgetFbPage;
 use App\Models\Servies\UsersGroup;
+use App\Models\Vk\WidgetVkPage;
 use App\Models\WidgetCanal;
 use App\Models\Widgets\WidgetCallbackRouting;
 use App\Sites;
@@ -275,6 +276,8 @@ protected $for_view=null;
         $data['sites'] = DB::table('sites')->where('id', $data['widget']->sites_id)->first();
         $data['widget_vk'] = DB::table('widget_vk')->where('widget_id', $this->widget->id)->where('my_company_id', $user->my_company_id)->first();
 
+        $data['fb_url']=VkApiController::get_url_for_token();
+        $data['fb_pages']=WidgetVkPage::where('my_company_id',$user->my_company_id)->get();
         return $this->get_renders($data, $datainput, $tabs, $switch, $status);
     }
     public function widget_120100($datainput, $tabs, $switch, $status)
@@ -294,7 +297,7 @@ protected $for_view=null;
 
             $data['prov_google_token'] = 1;
         }
-    $data['groups'] = UsersGroup::where('my_company_id', $user->my_company_id)->with('users')->get();
+         $data['groups'] = UsersGroup::where('my_company_id', $user->my_company_id)->with('users')->get();
 
 $urole=\DB::table('group_role_user')->where('group_id',2)->pluck('user_id');
         $data['operators']=User::where('my_company_id', $user->my_company_id)->wherein('id',$urole)->get();

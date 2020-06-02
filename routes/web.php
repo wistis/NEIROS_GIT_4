@@ -30,6 +30,13 @@ Route::middleware(['auth','webs','operator'])->group(function () {
 
 
         Route::get( '/reportsconstruct/{url}', 'ReportsController@reportsconstruct');
+        Route::get( '/vks', 'VkApiController@new_vk');
+        Route::get( '/vk_1', 'VkApiController@vk_1');
+        Route::get( '/vk_2', 'VkApiController@vk_2');
+        Route::get( '/vk_3', 'VkApiController@vk_3');
+        Route::get( '/vk_4', 'VkApiController@vk_4');
+        Route::get( '/vk_5', 'VkApiController@vk_5');
+        Route::get( '/vk_6', 'VkApiController@vk_6');
 
     Route::get('/home', 'IndexController@index');
     Route::get('/', 'IndexController@index');
@@ -180,6 +187,8 @@ Route::middleware(['auth','webs','operator'])->group(function () {
 
         Route::resource('tarifs', TarifsController::class)->middleware('isadmin');;
         Route::resource('stages', StagesController::class);
+        Route::resource('bots', SearchBotsController::class)->middleware('isadmin');;
+        Route::get('bots/delete/{id}', 'SearchBotsController@delet')->middleware('isadmin');;
         Route::resource('smsreports',  Reports\SmsReportsController::class);
         Route::resource('admintm', AdminTMController::class)->middleware('isadmin');;
         Route::resource('messages', Admin_messagesController::class);
@@ -253,6 +262,11 @@ Route::middleware(['auth','webs','operator'])->group(function () {
     });
     Route::group(['domain' => 'chat.neiros.ru'], function()
     {
+
+        Route::get('robots.txt', function (){
+            return 'User-agent: *
+Disallow: /';
+        });
         Route::get('logout',  'IndexController@logout' );
         Route::POST('setting_chat',  'ChatController@setting_chat' );
         Route::POST('send_token_push',  'ChatController@send_token_push' );
@@ -269,6 +283,7 @@ Route::post('createsite', 'SitesController@createsite');
 Route::post('/ajax/set_sites', 'IndexController@set_sites');
 Route::post('/widget/status', 'WidgetController@set_status');
 Route::post('/widget/get_setting', 'WidgetController@get_setting');
+Route::get('/get_setting', 'ApiController@get_setting_get');
 Route::post('/widget/safe', 'WidgetController@safe_widget');
 Route::post('/widget/get_amo_data', 'WidgetController@get_amo_data');
 Route::post('/widget/get_b24_data', 'WidgetController@get_b24_data');
@@ -383,3 +398,5 @@ Route::match(["POST","get"],'wistis/{id?}','Developer\ServiesController@index')-
 
 /*Курс валют на сегодня*/
 Route::get('get_curs','IndexController@get_curs');
+Route::get('/vkapi/getkey', 'VkApiController@getkey');
+Route::get('/vkapi/getkeygroup', 'VkApiController@getkeygroup');

@@ -7,7 +7,7 @@
 </style>
 <div class="navbar     navbar-static navbar-fixed-top" style="background: white;">
     <div class="navbar-header">
-        <a class="navbar-brand" href="/"><img src="/Neiros.png" alt="" style="height: 30px;
+        <a class="navbar-brand" href="/"><img src="/global_assets/images/icon/logo_neiros_new.svg" alt="" style="height: 30px;
 
 margin-top: -7px;margin-left: 13px;"></a>
 
@@ -164,7 +164,7 @@ $REQUEST_URI_projects = strripos($_SERVER['REQUEST_URI'], 'projects?page=');
                 </div>
             </li>
 
-             <li><a href="/setting/partners">Партнерская программа</a> </li>
+            
             <li class="dropdown dropdown-user">
                 <a class="dropdown-toggle" data-toggle="dropdown">
 
@@ -173,9 +173,9 @@ $REQUEST_URI_projects = strripos($_SERVER['REQUEST_URI'], 'projects?page=');
                 </a>
 
                 <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a href="http://help.neiros.ru/" target="_blank"><i class="icon-user-plus"></i> Документация</a></li>
-                    <li><a href="/tickets"><i class="icon-coins"></i> Поддержка</a></li>
-                    <li><a href="#"><i class="icon-coins"></i> Контакты</a></li>
+                    <li><a href="http://help.neiros.ru/" target="_blank"><i class="fa fa-file-text" aria-hidden="true"></i> Документация</a></li>
+                    <li><a href="/tickets"><i class="fa fa-life-ring" aria-hidden="true"></i> Поддержка</a></li>
+                    <li><a href="#"><i class="fa fa-check-square-o" aria-hidden="true"></i> Контакты</a></li>
 
                 </ul>
             </li>
@@ -188,17 +188,18 @@ $REQUEST_URI_projects = strripos($_SERVER['REQUEST_URI'], 'projects?page=');
 
                 <ul class="dropdown-menu dropdown-menu-right">
                     @if(Auth::user()->role==0) <p class="navbar-text">Баланс:{{$globalsetting->get_ballans()}} руб</p>@endif
-                    <li><a href="#"><i class="icon-user-plus"></i>Мой профиль</a></li>
+                    <li><a href="#"><i class="fa fa-address-card-o" aria-hidden="true"></i> Мой профиль</a></li>
 
                     @if(Auth::user()->role==0)
-                    <li><a href="/setting/paycompanys"><i class="icon-coins"></i> Платежные профили</a></li>
-                    <li><a href="/setting/checkcompanys">
-                            @if($globalsetting->get_pay_check())
-                                <span class="badge bg-teal-400 pull-right">{{$globalsetting->get_pay_check()}}</span>
-                            @endif
-                            <i class="icon-comment-discussion"></i> Счета</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#"><i class="icon-cog5"></i> Настройки</a></li>
+                  <?php /*?>  <li><a href="/setting/paycompanys"><i class="icon-coins"></i> Платежные профили</a></li><?php */?>
+                    <li><a href="/setting/billing_all"><i class="fa fa-credit-card" aria-hidden="true"></i> Биллинг    @if($globalsetting->get_pay_check())
+                                <span class="badge bg-teal-400 pull-right" style=" background:#2196f3">{{$globalsetting->get_pay_check()}}</span>
+                            @endif</a></li>
+                     <?php /*?>   <li><a href="/setting/checkcompanys">
+                         
+                        <i class="icon-comment-discussion"></i> Счета</a></li><?php */?>
+                 <?php /*?>   <li class="divider"></li><?php */?>
+                    <li><a  class="sidebar-secondary-hide sidebar-secondary-hide-setings" data-settings="settings"><i class="fa fa-cog" aria-hidden="true"></i> Настройки</a></li>
                     @endif
                 @if (\Cookie::get('admin'))
                         <li>@php

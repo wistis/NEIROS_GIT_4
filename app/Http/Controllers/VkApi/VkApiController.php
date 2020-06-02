@@ -60,7 +60,7 @@ class VkApiController extends Controller
     }
 
     function _vkApi_call($method, $params = array(),$widget_vk=null) {
-        $params['access_token'] = $widget_vk->apikey;
+        $params['access_token'] = $widget_vk->token;
         $params['v'] = '5.80';
 
         $query = http_build_query($params);

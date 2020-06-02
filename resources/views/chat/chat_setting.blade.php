@@ -34,7 +34,12 @@
                     <select name="my_chat_site" class="my_chat_site" style="float: right">
                     <option value="0" @if(Auth::user()->selected_chat==0) selected @endif >Все сайты</option>
                         @foreach($sites as $site)
-                            <option value="{{$site->id}}"  @if(Auth::user()->selected_chat==$site->id) selected @endif>{{$site->name}}</option>
+                            <option value="{{$site->id}}"  @if(Auth::user()->selected_chat==$site->id) selected @endif
+                            @if($site->get_widget_on(12))
+                            data-status="{{$site->get_widget_on(12)->status}}
+                            @endif">{{$site->name}}
+
+                            </option>
                         @endforeach
                     </select>
 

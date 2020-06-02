@@ -30,16 +30,22 @@ margin-top: 4px;display: none"></td>
    {!! $newlvl !!}
     </td>
 
-    <td  class="border-table-data" style="min-width: {{$mass_width[1]+2}}px; width: {{$mass_width[1]+2}}px; max-width: {{$mass_width[1]+2}}px;" ><div> {{ $directINFO->Clicks}}</div></td>
-    <td class="border-table-data" style="min-width: {{$mass_width[2]+2}}px; width: {{$mass_width[2]+2}}px; max-width: {{$mass_width[2]+2}}px;" ><div>{{$repgroup->sdelka}}</div></td>
-    <td class="border-table-data" style="min-width: {{$mass_width[3]+2}}px; width: {{$mass_width[3]+2}}px; max-width: {{$mass_width[3]+2}}px;" >{{number_format($con_sd, 2, '.', '')}}%<div></div></td>
-    <td class="border-table-data" style="min-width: {{$mass_width[4]+2}}px; width: {{$mass_width[4]+2}}px; max-width: {{$mass_width[4]+2}}px;" >{{number_format($requrey, 2, '.', '')}} р.<div></div></td>
-    <td class="border-table-data" style="min-width: {{$mass_width[5]+2}}px; width: {{$mass_width[5]+2}}px; max-width: {{$mass_width[5]+2}}px;" ><div>{{$repgroup->lead}}</div></td>
-    <td class="border-table-data" style="min-width: {{$mass_width[6]+2}}px; width: {{$mass_width[6]+2}}px; max-width: {{$mass_width[6]+2}}px;" ><div>{{number_format($con_ld, 2, '.', '')}}%</div></td>
+    <td  class="border-table-data" style="min-width: {{$mass_width[1]+2}}px; width: {{$mass_width[1]+2}}px; max-width: {{$mass_width[1]+2}}px;" ><div> {{ $directINFO->Clicks==0?'':$directINFO->Clicks}}</div></td>
+    <td class="border-table-data" style="min-width: {{$mass_width[2]+2}}px; width: {{$mass_width[2]+2}}px; max-width: {{$mass_width[2]+2}}px;" ><div>{{$repgroup->sdelka==0?'':$repgroup->sdelka}}</div></td>
+    <td class="border-table-data" style="min-width: {{$mass_width[3]+2}}px; width: {{$mass_width[3]+2}}px; max-width: {{$mass_width[3]+2}}px;" >
+        @if($con_sd!=0){{number_format($con_sd, 2, '.', '')}}% @endif
+
+        <div></div></td>
+    <td class="border-table-data" style="min-width: {{$mass_width[4]+2}}px; width: {{$mass_width[4]+2}}px; max-width: {{$mass_width[4]+2}}px;" >
+        @if($requrey!=0) {{number_format($requrey, 2, '.', '')}} р.@endif
+
+       <div></div></td>
+    <td class="border-table-data" style="min-width: {{$mass_width[5]+2}}px; width: {{$mass_width[5]+2}}px; max-width: {{$mass_width[5]+2}}px;" ><div>{{$repgroup->lead==0?"":$repgroup->lead}}</div></td>
+    <td class="border-table-data" style="min-width: {{$mass_width[6]+2}}px; width: {{$mass_width[6]+2}}px; max-width: {{$mass_width[6]+2}}px;" ><div>@if($con_ld!=0){{number_format($con_ld, 2, '.', '')}}%@endif</div></td>
     <td class="border-table-data" style="min-width: {{$mass_width[7]+2}}px; width: {{$mass_width[7]+2}}px; max-width: {{$mass_width[7]+2}}px;" ><div> @if($repgroup->lead != 0)
-    {{number_format($repgroup->summ/$repgroup->lead, 2, '.', '')}} @else {{0}} @endif р.</div></td>
-    <td class="border-table-data" style="min-width: {{$mass_width[8]+2}}px; width: {{$mass_width[8]+2}}px; max-width: {{$mass_width[8]+2}}px;" ><div>{{ number_format($repgroup->summ, 2, '.', '') }} р.</div></td>
-    <td class="border-table-data" style="min-width: {{$mass_width[9]+2}}px; width: {{$mass_width[9]+2}}px; max-width: {{$mass_width[9]+2}}px;" ><div>{{ number_format($summ_rashod, 2, '.', '') }} р.</div></td>
+    {{number_format($repgroup->summ/$repgroup->lead, 2, '.', '')}} р. @else  @endif</div></td>
+    <td class="border-table-data" style="min-width: {{$mass_width[8]+2}}px; width: {{$mass_width[8]+2}}px; max-width: {{$mass_width[8]+2}}px;" ><div>@if($repgroup->summ!=0){{ number_format($repgroup->summ, 2, '.', '') }} р.@endif</div></td>
+    <td class="border-table-data" style="min-width: {{$mass_width[9]+2}}px; width: {{$mass_width[9]+2}}px; max-width: {{$mass_width[9]+2}}px;" ><div>@if($summ_rashod!=0){{ number_format($summ_rashod, 2, '.', '') }} р.@endif</div></td>
     <td class="border-table-data" style="min-width: {{$mass_width[10]+2}}px; width: {{$mass_width[10]+2}}px; max-width: {{$mass_width[10]+2}}px;" ><div>{{$roi}}</div></td>
 </tr><tr  id="m{{$hash}}"></tr>
 @endif

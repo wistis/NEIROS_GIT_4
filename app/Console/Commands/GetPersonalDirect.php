@@ -42,7 +42,7 @@ class GetPersonalDirect extends Command
     public function handle()
     {
         $DirectController=new DirectController();
-        $id = $this->argument('audioid');
+     echo   $id = $this->argument('audioid');
         try {
             $wi_dir = DB::table('widget_direct')->
             join('widgets', 'widgets.id', '=', 'widget_direct.widget_id')
@@ -66,7 +66,7 @@ $parent=$log->id;
           $log->parent_id=$parent;
             $log->save();
         }catch (\Exception $e){
-            Log::info($e);
+         info ($e);
         }
 
 

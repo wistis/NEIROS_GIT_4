@@ -124,7 +124,7 @@
         </ul>
     </div>
 <div class="container__deshbord adasdsada">
-    <div class="panel panel-flat  @if(request()->url()=='https://cloud.neiros.ru/widget/tip/10') panel-integration @endif">
+    <div class="panel panel-flat @if(request()->url()=='https://cloud.neiros.ru/widget/tip/2') panel-calltrcing @endif  @if(request()->url()=='https://cloud.neiros.ru/widget/tip/10') panel-integration @endif   ">
         <div class="panel-heading">
 
 
@@ -163,7 +163,7 @@
                 var elems = document.querySelectorAll('.switchery,.switchery1');
 
                 for (var i = 0; i < elems.length; i++) {
-                    var switchery = new Switchery(elems[i], {size: 'small'});
+                    var switchery = new Switchery(elems[i], {size: 'small' , color: '#00B9EE'});
                 }
 
                 $(document).on('click','.widget_status_checkbox, .set_status', function () {
@@ -419,9 +419,9 @@ $('.item-widget').on('click', function(){
 		$('#WidgetModal2 .widget-status-btn').addClass('disconnect');
 		}
 	else{
-		$('#WidgetModal2 .block-descr').css('display','block');
-		$('#WidgetModal2 .accordion-setings').css('display','none');
-		$('#WidgetModal2 .widget-status-btn').css('display','none');
+		$('#WidgetModal2 .block-descr').css('display','none');
+		$('#WidgetModal2 .accordion-setings').css('display','block');
+		$('#WidgetModal2 .widget-status-btn').css('display','block');
 		$('#WidgetModal2 .widget-status-btn').html('Подключить')
 		$('#WidgetModal2 .widget-status-btn').removeClass('disconnect');
 		}

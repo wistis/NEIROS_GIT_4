@@ -123,6 +123,7 @@ class WidgetController extends Controller
 
 
         /**/
+
         if (request()->get('subtip') == 100001) {
             $AllWidgetController = new AllWidgetController(0, auth()->user());
             $data = $AllWidgetController->widget_router(0, 0, $data, 0, 0, 1);
@@ -259,14 +260,169 @@ class WidgetController extends Controller
 
         }
     }
+    public function get_setting_get()
+    {
 
+        $data['user'] = auth()->user();;
+        $data['tabs'] = '';;
+        $data['modals'] = [];;
+        $data['status_checkbox'] = '';;
+        $data['title'] = '';;
+
+
+        /**/
+
+        if (request()->get('subtip') == 100001) {
+            $AllWidgetController = new AllWidgetController(0, auth()->user());
+            $data = $AllWidgetController->widget_router(0, 0, $data, 0, 0, 1);
+            $data = $AllWidgetController->widget_router(15, 5, $data, 0, 0, 1);
+            return $data;
+        }
+        if (request()->get('subtip') == 'advertisingchannelcost') {
+            $AllWidgetController = new AllWidgetController(3, auth()->user());
+            $data = $AllWidgetController->widget_router(3, 1, $data, 0, 0, 0);
+            return $data;
+        }
+        if (request()->get('subtip') == 'allreports_setting') {
+            $repcont = new ReportsController();
+            return $repcont->setting();
+
+
+
+        }
+        if (request()->get('subtip') == 'calltrack_setting_ajax') {
+
+            return $this->calltrack_setting_ajax();
+
+
+
+        }
+
+
+        if (request()->get('subtip') == 'advertisingchannel') {
+            $repcont = new Advertising_channelController();
+            return $repcont->index();
+
+        }
+
+
+        if (request()->get('subtip') == 12) {
+            /*Статистика*/
+            $AllWidgetController = new AllWidgetController(12, auth()->user());
+            /*   $data = $AllWidgetController->widget_router(12, 0, $data, 1, 0, 1);*/
+            $data = $AllWidgetController->widget_router(12, 1, $data, 0, 0, 1, 1);
+            /* $data = $AllWidgetController->widget_router(12, 2, $data, 0, 0, 1);
+             $data = $AllWidgetController->widget_router(12, 3, $data, 0, 0, 1);*/
+            /* $data = $AllWidgetController->widget_router(12, 4, $data, 0, 0, 1);*/
+            //$data = $AllWidgetController->widget_router(12, 5, $data, 0, 0, 1);
+            $data = $AllWidgetController->widget_router(12, 7, $data, 0, 0, 1, 1);
+
+            return $data;
+
+        }
+        if (request()->get('subtip') == 1) {
+            /*Статистика*/
+            $tip = request()->get('subtip');
+            $AllWidgetController = new AllWidgetController(1, auth()->user());
+            $data = $AllWidgetController->widget_router(1, 0, $data, 1, 1, 0);
+            /*  $data = $AllWidgetController->widget_router(1, 1, $data, 0, 0, 0);*/
+
+            /* $data = $AllWidgetController->widget_router(1, 3, $data, 0, 0, 0);*/
+            /* $data = $AllWidgetController->widget_router(1, 4, $data, 0, 0, 0);
+             $data = $AllWidgetController->widget_router(1, 2, $data, 0, 0, 0);*/
+            return $data;
+
+        }
+
+        if (request()->get('subtip') == 19) {
+            $AllWidgetController = new AllWidgetController(19, auth()->user());
+            $tip = request()->get('subtip');
+            $data = $AllWidgetController->widget_router($tip, 0, $data, 1, 1, 0);
+            /* $data = $AllWidgetController->widget_router($tip, 1, $data, 0, 0, 0);*/
+            /*   $data = $AllWidgetController->widget_router($tip, 2, $data, 0, 0, 0);
+               $data = $AllWidgetController->widget_router($tip, 3, $data, 0, 0, 0);*/
+
+
+            return $data;
+
+
+        }
+
+        if (request()->get('subtip') == 23) {
+            $AllWidgetController = new AllWidgetController(23, auth()->user());
+            $tip = request()->get('subtip');
+            $data = $AllWidgetController->widget_router(12, 5, $data, 0, 0, 1);
+
+
+            $w_23 = Widgets::where('tip', 23)->where('my_company_id', auth()->user()->my_company_id)->where('sites_id', auth()->user()->site)->first();
+            $data['widget'] = $w_23->id;
+
+
+            return $data;
+
+
+        }
+        if (request()->get('subtip') == 24) {
+            $AllWidgetController = new AllWidgetController(24, auth()->user());
+            $tip = request()->get('subtip');
+            $data = $AllWidgetController->widget_router(12, 4, $data, 0, 0, 1);
+
+            $w_23 = Widgets::where('tip', 24)->where('my_company_id', auth()->user()->my_company_id)->where('sites_id', auth()->user()->site)->first();
+            $data['widget'] = $w_23->id;
+
+
+            return $data;
+
+
+        }
+        if (request()->get('subtip') == 25) {
+            $AllWidgetController = new AllWidgetController(25, auth()->user());
+            $tip = request()->get('subtip');
+            $data = $AllWidgetController->widget_router(12, 3, $data, 0, 0, 1);
+
+            $w_23 = Widgets::where('tip', 25)->where('my_company_id', auth()->user()->my_company_id)->where('sites_id', auth()->user()->site)->first();
+            $data['widget'] = $w_23->id;
+
+
+            return $data;
+
+
+        }
+        if (request()->get('subtip') == 26) {
+            /*Статистика*/
+            $AllWidgetController = new AllWidgetController(12, auth()->user());
+            /*   $data = $AllWidgetController->widget_router(12, 0, $data, 1, 0, 1);*/
+            $data = $AllWidgetController->widget_router(12, 1, $data, 0, 0, 1, 1);
+            /* $data = $AllWidgetController->widget_router(12, 2, $data, 0, 0, 1);
+             $data = $AllWidgetController->widget_router(12, 3, $data, 0, 0, 1);*/
+            /* $data = $AllWidgetController->widget_router(12, 4, $data, 0, 0, 1);*/
+            //$data = $AllWidgetController->widget_router(12, 5, $data, 0, 0, 1);
+            $data = $AllWidgetController->widget_router(12, 7, $data, 0, 0, 1, 1);
+            $data = $AllWidgetController->widget_router(12, 100, $data, 0, 0, 1, 1);
+            $w_23 = Widgets::where('tip', 26)->where('my_company_id', auth()->user()->my_company_id)->where('sites_id', auth()->user()->site)->first();
+            $data['widget'] = $w_23->id;
+
+
+            return $data;
+
+
+        }
+    }
     public function calltrack_setting_ajax(){
         $my_site=Sites::where('id',auth()->user()->site)->first();
         $min=$my_site->phone_rezerv_time/60;
+$widget=Widgets::where('tip',2)->where('sites_id',auth()->user()->site)->first();
 
+$w_status='';
+if($widget->status==1){
+    $w_status='checked';
+}
+$status_checkbox=' <div class="checkbox checkbox-switchery col-md-1">
+                                        <label><input type="checkbox" class="switchery widget_status_checkbox"  
+                   name="status" ' . $w_status . '  data-id="' . $widget->id . '" ></label>
+                                    </div>';
 
-
-        $data['renders']= view('reports.setting_calltreack',compact( 'min'))->render();
+        $data['renders']= view('reports.setting_calltreack',compact( 'min','status_checkbox'))->render();
         return $data;
     }
 
@@ -1407,7 +1563,11 @@ if($data['widget_chat_call']){
 
 
         ]);
-        return 1;
+
+
+        return  VkApiController::safe_groups($request->pages);
+
+
     }
 
     public function get_b24_data_safe_default(Request $request)

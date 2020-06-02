@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\SchemaController;
 use App\Http\Controllers\StagesController;
 use App\Models\Servies\GroupRoleUser;
+use App\Models\Tarifs;
+use App\Users_company;
 use DB;
 use App\User;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -57,7 +60,7 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'phone' => 'required|string|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6',
             'g-recaptcha-response' => 'recaptcha',
         ]);
     }
@@ -70,7 +73,11 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $companyId=DB::table('users_company')->insertgetId(['name'=>$data['company']]);
+        $uc=Users_company::create($data['company']);
+
+$uc->tariff_id =Tarifs::start_tarif()->id;
+$uc->is_active =0;
+$uc->test_period =1;
 
 $sms_code=rand(1111,9999);
 
@@ -84,7 +91,7 @@ $sms_code=rand(1111,9999);
             'phone' => $data['phone'],
             'test_period' => 1,
             'role' => 0,
-            'my_company_id'=> $companyId,
+            'my_company_id'=> $uc->id,
             'apikey'=>md5(time().rand(1,10000)),
             'start_date'=>date('Y-m-d'),
             'end_date'=>date('Y-m-d'),

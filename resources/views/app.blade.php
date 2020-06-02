@@ -300,7 +300,7 @@ viber://pa?chatURI=wististest&context=text2">Вибер</a>
 
                                                     <div class="all_time_block">
                                                     </div>
-<?php /*?><div id="sortable-panel-otobragenie">
+<div id="sortable-panel-otobragenie">
          <div class="panel-otobragenie col-xs-12">
            <form name="formawork">
                                         <input type="hidden" name="form_action" value="formawork_2">
@@ -486,7 +486,7 @@ viber://pa?chatURI=wististest&context=text2">Вибер</a>
          
          
                                                     
-                                                      </div><?php */?>
+                                                      </div>
 
 
                               <div class="col-xs-12 add_sourse_block add_sourse_block__chat" style=" display:none;">
@@ -1226,7 +1226,26 @@ $(document).on('click', '.save-setings2',function(){
 setTimeout(body_panel_visible, 500);
 	
 	})
-  
+ function deletecanal(id) {
+     datatosend = {
+         id:id,
+
+         _token: $('[name=_token]').val(),
+
+
+     };
+     $.ajax({
+         type: "POST",
+         url: '/ajax/deletecanal',
+         data: datatosend,
+         success: function (html1) {
+             $('#cost'+id).remove();
+         }
+
+
+
+     });
+ }
   
   </script>
 <script type="text/javascript" src="https://vk.com/js/api/openapi.js?154"></script>

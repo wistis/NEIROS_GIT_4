@@ -96,12 +96,19 @@
         <div class="col-xs-12">
             <div class="form-group">
                 <label class="col-xs-12 control-label">Рекламные компании:</label>
-                <div class="col-xs-12"><div><input type="checkbox" name="mft" id="mft"   value="1"> Отметить все
+                <div class="col-xs-12"><div class="col-xs-12"><label class="add-number-new-checkbox label-dir">Отметить все
+                                                            <input type="checkbox" name="mft" id="mft"   value="1">
+                                                            <span class="checkmark"></span>
+                                                        </label> 
                     </div>
                     @foreach($counters as $counter)
 
-                        <div><input type="checkbox" name="radiocounter[]"  class="dircheck" @if($counter->status==1) checked="checked"
-                                    @endif value="{{$counter->id}}"> {{$counter->company}} ({{$counter->name}})
+                        <div class="col-xs-12"><label class="add-number-new-checkbox label-dir">{{$counter->company}} ({{$counter->name}})
+                                    
+                                     <input type="checkbox" name="radiocounter[]" class="dircheck" @if($counter->status==1) checked="checked"
+                                    @endif value="{{$counter->id}}">
+                                                            <span class="checkmark"></span>
+                                                        </label>
                         </div>
                     @endforeach
 
@@ -114,8 +121,13 @@
             <div class="col-xs-12">
                 <div class="form-group">
                     <label class="col-xs-12 control-label">Метка Neiros:</label>
-                    <div class="col-xs-12"><div><input type="checkbox" name="update_utm"     value="1"> Разметить меткой
-
+                    <div class="col-xs-12"><div class="col-xs-12">
+                    
+                    <label class="add-number-new-checkbox label-dir">Разметить меткой
+                                                            <input type="checkbox" name="update_utm"     value="1">
+                                                            <span class="checkmark"></span>
+                                                        </label>
+                    
 
                     </div>
 

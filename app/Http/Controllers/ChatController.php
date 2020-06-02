@@ -10,6 +10,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ViberAPI\ViberApiController;
 use App\Http\Controllers\VkApi\VkApiController as Vk_Api;
 use App\Models\Fb\WidgetFbPage;
+use App\Models\Vk\WidgetVkPage;
 use App\Sites;
 use Auth;
 use DB;
@@ -259,13 +260,13 @@ foreach ($temas as $tema){
     public function get_tek_tema(Request $request)
     {
         $user = Auth::user();
-
+ ;
         if($user->selected_chat==0) {
 
             $tema = DB::table('chat_tema')->where('my_company_id', $user->my_company_id)->where('id', $request->tema)->first();
             if (!$tema) {
                 $tema = DB::table('chat_tema')->where('my_company_id', $user->my_company_id)->where('hash', $request->tema)->first();
-
+dd($tema);
             }
         }else{
 
@@ -851,7 +852,7 @@ $data['messages'].=' <div class="diliver diliver--gray"><span>Сегодня</sp
             return 'error03';
         }
 
-
+$group=WidgetVkPage::where('vk_id',$tema->group_id)->first();
         $user_id = DB::table('chat_with_client')->where('tema_id', $tema->id)->where('from', 0)->first();
 
         $Vk_Api = new Vk_Api();
@@ -859,7 +860,7 @@ $data['messages'].=' <div class="diliver diliver--gray"><span>Сегодня</sp
             'peer_id' => $user_id->input_user_id,
             'message' => $message,
             'attachment' => implode(',', array())
-        ), $widget_vk);
+        ), $group);
 
 
         $idnewmes = DB::table('chat_with_client')->insertgetid([

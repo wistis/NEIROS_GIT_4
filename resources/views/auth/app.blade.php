@@ -54,9 +54,9 @@
 
 
                 <!-- Footer -->
-                <div class="footer text-muted text-center">
+            <?php /*?>    <div class="footer text-muted text-center">
                     &copy; 2015. <a href="https://neiros.ru">Neiros</a> 
-                </div>
+                </div><?php */?>
                 <!-- /footer -->
 
             </div>
@@ -74,4 +74,14 @@
 </body>
 </html>
 
-
+<script>
+var d = new Date();
+var day = d.getDate();
+var hrs = d.getHours();
+var min = d.getMinutes();
+var sec = d.getSeconds();
+if(hrs >= 20 || hrs <= 8){
+	$('body').addClass('login-container-night');
+	
+	}
+</script>

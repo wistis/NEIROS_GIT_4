@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Reports\AsteriskCall;
 use App\Project;
 use App\Widgets;
 use Illuminate\Http\Request;
@@ -158,7 +159,20 @@ $this->send_to_roistat();
         $this->data_to_send['neiros'] =(string)$this->project->id;
         $this->data_to_send['status'] = $this->audio->disposition;
         $this->data_to_send['duration'] = $this->audio->duration;
-        $this->data_to_send['link'] = 'http://82.146.43.227/records/' . date('Y', strtotime($this->audio->calldate)) . '/' . date('m', strtotime($this->audio->calldate)) . '/' . date('d', strtotime($this->audio->calldate)) . '/' . $this->audio->record_file . '.mp3';
+
+
+
+
+$audiolinl=AsteriskCall::where('project_id',$this->project->id)->first();
+if($audiolinl){
+
+    $this->data_to_send['link'] = 'https://drive.google.com/uc?authuser=0&id='.$audiolinl->token.'&export=download';
+}else{
+    $this->data_to_send['link'] = '';
+}
+
+
+
 
         Log::info('Webhoook');
         Log::info(json_encode($this->data_to_send));

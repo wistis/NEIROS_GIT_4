@@ -37,32 +37,40 @@
                     <li class="navigation-header">Настройки</li>
 
 
-                    <li><a href="/setting/billing_all"><i class="fa fa-cogs" aria-hidden="true"></i> Биллинг</a></li>
-                        {{--<li><a href="/setting/checkcompanys"><i class="fa fa-cogs" aria-hidden="true"></i> Счета на оплату</a></li>
-                        <li><a href="/setting/billing/phones"><i class="fa fa-cogs" aria-hidden="true"></i> Стоимость номеров</a></li>
-                        <li><a href="/setting/billing/recs"><i class="fa fa-cogs" aria-hidden="true"></i> Стоимость разговоров</a></li>
+                    <li><a href="/setting/billing_all"><i class="fa fa-credit-card" aria-hidden="true"></i> <span>Биллинг</span></a></li>
+                        {{--<li><a href="/setting/checkcompanys"><i class="fa fa-cogs" aria-hidden="true"></i> <span>Счета на оплату</span></a></li>
+                        <li><a href="/setting/billing/phones"><i class="fa fa-cogs" aria-hidden="true"></i> <span>Стоимость номеров</span></a></li>
+                        <li><a href="/setting/billing/recs"><i class="fa fa-cogs" aria-hidden="true"></i> <span>Стоимость разговоров</span></a></li>
 --}}
-
-                        <li><a href="/setting/clientfield"><i class="fa fa-cogs" aria-hidden="true"></i> Доп поля контактов</a></li>
-                        <li><a href="/setting/companyfield"><i class="fa fa-cogs" aria-hidden="true"></i> Доп поля компаний</a></li>
-                        <li><a href="/setting/users"><i class="fa fa-cogs" aria-hidden="true"></i> Пользователи</a></li>
-                        <li><a href="/setting/sites"><i class="fa fa-cogs" aria-hidden="true"></i> Сайты</a></li>
-                    <li><a href="/setting/smsreports"><i class="fa fa-cogs" aria-hidden="true"></i> SMS отчеты</a></li>
-                    <li><a href="/setting/messages"><i class="fa fa-cogs" aria-hidden="true"></i> Сообщения</a></li>
-             
+ @if(Auth::user()->super_admin==1)
+                        <li><a href="/setting/clientfield"><i class="fa fa-cogs" aria-hidden="true"></i> <span>Доп поля контактов</span></a></li>
+                        <li><a href="/setting/companyfield"><i class="fa fa-cogs" aria-hidden="true"></i> <span>Доп поля компаний</span></a></li>
+                            <li><a href="/setting/messages"><i class="fa fa-cogs" aria-hidden="true"></i> <span>Сообщения</span></a></li>
+  @endif                      
+                        
+                        
+                        <li><a href="/setting/users"><i class="fa fa-users" aria-hidden="true"></i> <span>Пользователи</span></a></li>
+                        <li><a href="/setting/sites"><i class="fa fa-code" aria-hidden="true"></i> <span>Сайты</span></a></li>
+                    <li><a href="/setting/smsreports"><i class="fa fa-envelope-open-o" aria-hidden="true"></i> <span>SMS отчеты</span></a></li>
+                
+              <li><a href="/setting/partners"><i class="fa fa-black-tie" aria-hidden="true"></i> <span style="
+    display: block;
+    float: left;
+    margin-top: -3px;
+    line-height: 1.2;
+">Партнерская<br>программа</span></a> </li>
                     
                 </ul>
             </div>
             
             <div class="category-content display-all-content no-padding colltrecing" style="display:none;">
                 <ul class="navigation navigation-alt navigation-accordion">
-                    <li class="navigation-header" style="padding-bottom: 30px;"><div style="float: left;margin-bottom: 10px;padding-right: 10px;">Коллтрекинг</div> <? if(isset($status_checkbox)){?> <div class="switchery-xs" style="margin-top: 4px;">{!! $status_checkbox !!}</div> <? } ?></li>
-                        <li class="active"><a  data-type-menu="#basic-tab6"><i class="fa fa-bar-chart" aria-hidden="true"></i> Статистика</a></li>
+                        <li class="active"><a  data-type-menu="#basic-tab6"><i class="fa fa-bar-chart" aria-hidden="true"></i> <span>Статистика</span></a></li>
 <?php /*?>                        <li><a  data-type-menu="#basic-tab1"><i class="fa fa-cogs" aria-hidden="true"></i>  Основное</a></li>
-<?php */?>                           <li><a   data-type-menu="#basic-tab2"><i class="fa fa-list-ol" aria-hidden="true"></i> Номера</a></li>           
-                      <li><a   data-type-menu="#basic-tab3"><i class="fa fa-usb" aria-hidden="true"></i> Сценарии</a></li>   
-                      <li><a   data-type-menu="#basic-tab4"><i class="fa fa-volume-up" aria-hidden="true"></i> Входящие звонки</a></li>
-                    <li><a  class="item-widget1" data-name="Настройка коллтрекинга" data-id="calltrack_setting_ajax"><i  class="fa fa-cogs" aria-hidden="true"></i>Настройки</a></li>
+<?php */?>                           <li><a   data-type-menu="#basic-tab2"><i class="fa fa-list-ol" aria-hidden="true"></i> <span>Номера</span></a></li>           
+                      <li><a   data-type-menu="#basic-tab3"><i class="fa fa-usb" aria-hidden="true"></i> <span>Сценарии</span></a></li>   
+                      <li><a   data-type-menu="#basic-tab4"><i class="fa fa-volume-up" aria-hidden="true"></i> <span>Входящие звонки</span></a></li>
+                    <li><a  class="item-widget1" data-name="Настройка коллтрекинга" data-id="calltrack_setting_ajax"><i class="fa fa-cog" aria-hidden="true"></i> <span>Настройки</span></a></li>
 
                 </ul>
             </div>
@@ -71,11 +79,11 @@
                 <ul class="navigation navigation-alt navigation-accordion">
                     <li class="navigation-header">Аналитика</li>
 
-                <li ><a  class="item-widget1" data-name="Настройка Промокодов" data-id="100001" ><i class="fa fa-list-alt" aria-hidden="true"></i> Промокоды</a></li>
+                <li ><a  class="item-widget1" data-name="Настройка Промокодов" data-id="100001" ><i class="fa fa-list-alt" aria-hidden="true"></i> <span>Промокоды</span></a></li>
 
-                <li><a class="item-widget1" data-name="Настройка Событий"  data-id="allreports_setting"><i class="fa fa-bullseye" aria-hidden="true"></i> События</a></li>
-                <li><a class="item-widget1" data-name="Настройка Рекламных каналов" data-id="advertisingchannel" ><i class="fa fa-window-restore" aria-hidden="true"></i> Рекламные каналы</a></li>
-                <li><a  class="item-widget1" data-name="Настройка Расходов" data-id="advertisingchannelcost" ><i class="fa fa-cogs" aria-hidden="true"></i> Расходы</a></li>
+                <li><a class="item-widget1" data-name="Настройка Событий"  data-id="allreports_setting"><i class="fa fa-bullseye" aria-hidden="true"></i> <span>События</span></a></li>
+                <li><a class="item-widget1" data-name="Настройка Рекламных каналов" data-id="advertisingchannel" ><i class="fa fa-window-restore" aria-hidden="true"></i> <span>Рекламные каналы</span></a></li>
+                <li><a  class="item-widget1" data-name="Настройка Расходов" data-id="advertisingchannelcost" ><i class="fa fa-cogs" aria-hidden="true"></i> <span>Расходы</span></a></li>
 
                     
                 </ul>

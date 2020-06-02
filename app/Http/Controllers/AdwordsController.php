@@ -108,7 +108,7 @@ return $this-> GetRefrech($token ,$adid );
 
         $entries=$page->getEntries();
 
-        DB::table('metrika_adwords_company')->where('widget_direct_id', $widgget_ad->id)->delete();
+      //  DB::table('metrika_adwords_company')->where('widget_direct_id', $widgget_ad->id)->delete();
 
         for($i=0;$i<count($entries);$i++){
             $comp=$entries[$i];
@@ -191,7 +191,7 @@ try {
 
         $entries=$page->getEntries();
 
-        DB::table('metrika_adwords_company')->where('widget_direct_id', $widgget_ad->id)->delete();
+       // DB::table('metrika_adwords_company')->where('widget_direct_id', $widgget_ad->id)->delete();
 
         for($i=0;$i<count($entries);$i++){
 $comp=$entries[$i];
@@ -321,37 +321,20 @@ $stop=true;
             'Cost',
             'Date',
             'AccountCurrencyCode',
+            'Id',
 
         ];
 
         $typereport=ReportDefinitionReportType::KEYWORDS_PERFORMANCE_REPORT;
     }
 
-  /*  if($type==4){$stop=false;
-        $fields= [
-            'CriteriaId',
-            'CriteriaParameters',
 
-
-        ];
-
-        $typereport=ReportDefinitionReportType::CLICK_PERFORMANCE_REPORT;
-    }*/
-
-
-    // Create selector.
     $selector = new Selector();
     $selector->setFields(
         $fields
     );
     $selector->setDateRange(new DateRange($DateFrom, $DateTo));
-    // Use a predicate to filter out paused criteria (this is optional).
-  /*  $selector->setPredicates(
-        [
-            new Predicate('Status', PredicateOperator::NOT_IN, ['PAUSED'])
-        ]
-    );*/
-    // Create report definition.
+
     $reportDefinition =new ReportDefinition();;
     $reportDefinition->setSelector($selector);
     $reportDefinition->setReportName(

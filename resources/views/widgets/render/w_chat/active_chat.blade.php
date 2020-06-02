@@ -2,7 +2,7 @@
     <div class="panel-heading" role="tab" id="heading-255">
         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-255"
            aria-expanded="false" aria-controls="collapse-255">
-            <div class="number-accardion">2</div>
+            <div class="number-accardion">1</div>
             <div class="h-1">Чат</div>
             <div class="descr-text">Основные настройки чата</div>
         </a>

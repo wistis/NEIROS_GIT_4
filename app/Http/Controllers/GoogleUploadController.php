@@ -7,6 +7,7 @@ use League\Flysystem\Filesystem;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter;
+use Hypweb\Flysystem\GoogleDrive\Google_Service_Drive_Permission;
 
 class GoogleUploadController extends Controller
 {
@@ -108,15 +109,74 @@ class GoogleUploadController extends Controller
      *
      * @return [type] [description]
      */
-    public function files_count()
-    {
-        $response = $this->service->files->listFiles([
-            'q' => "'$this->folder_id' in parents and trashed=false",
-        ]);
 
-        return count($response->files);
+
+    public function set_permis($ids){
+        $adapter    = new GoogleDriveAdapter($this->service,$this->folder_id);
+        $filesystem = new Filesystem($adapter);
+        $calls=AsteriskCall::where('uploaded',$ids)  ->get();
+        foreach ($calls as $item){
+
+
+
+
+                $permission = new  \Google_Service_Drive_Permission();
+                $permission->setRole('reader');
+                $permission->setType('anyone');
+                $permission->setAllowFileDiscovery(false);
+                $permissions = $this->service->permissions->create($item->token, $permission);
+
+            $item->uploaded=7;
+            $item->save();
+
+
+        }
+
+
+
+
     }
 
+
+public function get_file(){
+
+
+
+        $calls=AsteriskCall::where('uploaded',2)->get();
+foreach ($calls as $item){
+
+
+
+
+$file=$item->id.'.mp3';
+    $adapter    = new GoogleDriveAdapter($this->service,$this->folder_id);
+    $filesystem = new Filesystem($adapter);
+    $response = $this->service->files->listFiles([
+        'q' => "'$this->folder_id' in parents and name contains '$file' and trashed=false",
+    ]);
+    $item->uploaded=5;
+    foreach ($response->files as $found) {
+
+        $adapter = new GoogleDriveAdapter($this->service, $this->folder_id);
+        $filesystem = new Filesystem($adapter);
+        try {
+$item->uploaded=3;
+$item->token=$found-> getId();;
+
+        } catch (\Exception $e) {
+            $item->uploaded=4;
+
+        }
+
+    }
+
+
+    $item->save();
+      /*  https://drive.google.com/file/d/1XM4fK6BofOZZ6oWRaeuVuvLpby0Uaw9l/view
+        https://drive.google.com/open?id=1XM4fK6BofOZZ6oWRaeuVuvLpby0Uaw9l*/
+    }
+
+}
 
     public function upload_file_from_server(){
         $calls=AsteriskCall::where('uploaded',0)->orderby('id','desc') ->get();
@@ -128,6 +188,7 @@ $url='http://82.146.43.227/records/'.$call->record;
         $adapter    = new GoogleDriveAdapter($this->service,$this->folder_id);
         $filesystem = new Filesystem($adapter);
         $filesystem->write($call->id.'.mp3', $read);
+
         $call->uploaded=2;
         $call-> save();
     }  catch (\Exception $e){

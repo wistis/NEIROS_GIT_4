@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/app" isTestSource="false" packagePrefix="App\" />
+      <excludeFolder url="file://$MODULE_DIR$/public/default" />
+      <excludeFolder url="file://$MODULE_DIR$/public/directreport" />
+      <excludeFolder url="file://$MODULE_DIR$/public/directreport_test" />
+      <excludeFolder url="file://$MODULE_DIR$/public/global_assets" />
+      <excludeFolder url="file://$MODULE_DIR$/public/images" />
+      <excludeFolder url="file://$MODULE_DIR$/public/moduls" />
+      <excludeFolder url="file://$MODULE_DIR$/public/public" />
+      <excludeFolder url="file://$MODULE_DIR$/public/socket.io" />
+      <excludeFolder url="file://$MODULE_DIR$/public/templatechat" />
+      <excludeFolder url="file://$MODULE_DIR$/public/test" />
+      <excludeFolder url="file://$MODULE_DIR$/public/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/public/tr" />
+      <excludeFolder url="file://$MODULE_DIR$/public/user_upload" />
+      <excludeFolder url="file://$MODULE_DIR$/public/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/public/xxx" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

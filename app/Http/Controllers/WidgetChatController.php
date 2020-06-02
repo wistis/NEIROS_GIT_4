@@ -149,6 +149,8 @@ class WidgetChatController extends Controller
                 ]);
             } else {
                 $ab = DB::table('widget_catch_lead_ab')->where('widget_catch_lead_id', $widget_chat->id) ->where('is_null', 1)->orderby('shows', 'ASC')->first();
+
+               if($ab){
                 $data['ab_view'] = DB::table('widget_catch_lead_ab_view')->insertGetId([
                     'site_id' => $site->id,
                     'my_company_id' => $site->my_company_id,
@@ -159,7 +161,7 @@ class WidgetChatController extends Controller
 
                 ]);
 
-
+               }
             }
         }
 
@@ -645,7 +647,13 @@ $tmetesst=time();
         if ($data['widget_chat']->callback_timer == '') {
             $data['widget_chat']->callback_timer = 30;
         }
+ if($request->has('test')){
 
+     $data['new_setting']=file_get_contents('https://cloud.neiros.ru/get_setting?subtip=26&json=1');
+  
+
+     return view('widgets.chat_new', $data);
+ }
         return view('widgets.chat', $data);
     }
 

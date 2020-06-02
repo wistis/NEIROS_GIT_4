@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 use App\Http\Controllers\Api\GaCallController;
+use App\Models\Chat\WidgetsChatMessRule;
+use App\Models\Chat\WidgetsChatUrlOperatorNew;
 use App\Models\Servies\BlackListNeirosIds;
+use App\Models\Servies\UsersGroup;
 use App\Models\Settings\CompanyDefaultSetting;
 use App\Models\Widgets\WidgetCallbackRouting;
+use App\User;
 use App\Widgets;
 use Meiji\YandexMetrikaOffline\Conversion;
 use App\Http\Controllers\Api\RoistatController;
@@ -27,9 +31,7 @@ protected $is_catch=0;
     }
 
 public function fromasteraudio(){
-info(request()->all());
-info('myaudio');
-    return 'ok';
+
 }
 
     public function tilda($key)
@@ -179,8 +181,48 @@ info(911);
 
 
     }
+public function n(){
+    $ajax=new AjaxController();
 
+    $ajax-> generatecallback();
+    $ajax-> generatecalltrack();
+    $go=new GoogleUploadController();
+    $go->upload_file_from_server();
+    $go->get_file();
+    $go->set_permis(3);
+
+}
+    public function myasterwebhock_console(){
+
+        Log::useFiles(base_path() . '/storage/logs/GACALL11.log', 'info');
+        info('310590 '.time());
+
+        $ajax=new AjaxController();
+        $ajax-> generatecallback();
+        $ajax-> generatecalltrack();
+        $go=new GoogleUploadController();
+        $go->upload_file_from_server();
+        $go->get_file();
+        $go->set_permis(3);
+
+
+
+
+    }
     public function myasterwebhock(Request $request){
+
+        Log::useFiles(base_path() . '/storage/logs/GACALL11.log', 'info');
+        info('310590 '.time());
+
+        $ajax=new AjaxController();
+        $ajax-> generatecallback();
+        $ajax-> generatecalltrack();
+        $go=new GoogleUploadController();
+        $go->upload_file_from_server();
+        $go->get_file();
+        $go->set_permis(3);
+
+
 
         $roistat_api=new RoistatController();
         $roistat_api->get_data_from_webhook($request->all());
@@ -253,6 +295,14 @@ if(!isset($datainput->data_event)){
 
              return '911';
         }
+
+        $proj=Project::where('neiros_visit',$datainput->neiros_visit)->where('created_at','>',date('Y-m-d H:i:s',(time()-300)))->first();
+        if($proj){
+            header('Access-Control-Allow-Origin:*');
+            $responsea = "(" . json_encode('') . ")";
+            return $responsea;
+        }
+
 if($widget->params['create_lead']==1) {
     $data_w['neiros_visit'] = $datainput->neiros_visit;
 
@@ -268,6 +318,8 @@ if($widget->params['create_lead']==1) {
         $WidgetApiController = new WidgetApiController();
         $getallwid = Project::where('widget_id', $widget->id)->count();
         $getallwid++;
+
+
         $projectId = $WidgetApiController->create_lead([
             'name' => 'Заявка с форм № ' . $getallwid,
             'stage_id' => $widget->stage_id,
@@ -1001,6 +1053,15 @@ $model_log->step=1;
 
             }
 
+        }elseif ($request->tip == 12) {
+            $widget_chat = DB::table('widgets_chat')->where('widget_id', $widget->id)->first();
+            $widget_routing_model=WidgetCallbackRouting::where('sites_id',$widget->sites_id)->where('status',1) ->get();
+            if(count($widget_routing_model)>0){
+
+                $widgetrouting=$widget_routing_model;
+
+            }
+
         } elseif ($request->tip==19) {
             $widget_chat = DB::table('widget_catch_lead')->where('widget_id', $widget->id)->first();
            $this->is_catch=1;
@@ -1607,6 +1668,37 @@ info('TEST AUDIO $callbach_voice'.$callbach_voice);
 
         }
     }
+
+
+    public function get_setting_get()
+    {
+
+        $user =User::find(22);;
+
+        $widget_chat = DB::table('widgets_chat')->where('id', 12)->where('my_company_id', $user->my_company_id)->first();
+        $widget=Widgets::find($widget_chat->widget_id);
+
+        $data['Быстрые ответы'] = DB::table('widgets_chat_fastotvet')->where('widget_id', $widget->id)->where('my_company_id', $user->my_company_id)->get();
+
+
+
+        $urole=\DB::table('group_role_user')->where('group_id',2)->pluck('user_id');
+
+        $data['operator_urls']=WidgetsChatUrlOperatorNew::where('widget_id',$widget->id)->with('operator')->get();
+        foreach ($data['operator_urls'] as $item){
+            $item->operator_name=optional($item->operator)->name;
+            $item->operator_image=optional($item->operator)->image;
+        }
+        $data['mess_rules']=WidgetsChatMessRule::where('widget_id',$widget->id)->with('rules')->get();
+if(request()->has('json')){
+    return  json_encode($data);
+}
+$m= json_encode($data);
+dd(json_decode($m));
+
+
+    }
+
 }
 
 

@@ -20,7 +20,9 @@ class Widgets extends Model
 public function get_name(){
         return $this->hasOne('App\Models\WidgetName','widget_id','tip');
 }
-
+    public function w4(){
+        return $this->hasOne('App\Models\Vk\WidgetVk','widget_id');
+    }
     public function w7(){
         return $this->hasOne('App\Models\Fb\WidgetFb','widget_id');
     }

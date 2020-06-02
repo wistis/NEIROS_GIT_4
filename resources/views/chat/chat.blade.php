@@ -13,7 +13,7 @@
 @endsection
 @section('content')
 
-    <div class="layout js-layout">
+    <div class="layout js-layout layout--users-opened">
         <div class="wrapper">
             <aside class="users">
                 <header class="users__header">
@@ -54,6 +54,25 @@
 
             <!--------chat----------->
             <main class="chat">
+            
+         <div class="w-open-chat">
+        	<img src="https://cloud.neiros.ru/global_assets/images/icon/user/dialog.svg" alt="">
+            <span>Выберите чат</span>
+            <label>Кликните по собеседнику слева, чтобы<br>
+читать и отправлять ему сообщения</label>
+        </div>
+        
+        <!--<div class="w-active-chat">
+        	<img src="https://cloud.neiros.ru/global_assets/images/icon/user/icon-active-chat.svg" alt="">
+            <span>Диалогов нет</span>
+            <p>Чтобы начать использование, необходимо активировать чат</p>
+            <button type="button" id="active-chat-btn" class="btn btn-primary  active-chat-btn">Активировать чат</button>
+            
+        </div>-->
+        
+            
+            
+            
                 <header class="chat__header" style="display: none">
                     @include('chat.chat_header')
                 </header>
@@ -314,7 +333,7 @@ $('#temablockid'+tema).addClass('user-item--active');
 
 
 
-
+console.log(datas);
                 messfrompotok(datas)
 
 
@@ -674,6 +693,15 @@ function  send_search(){
 
     window.parent.document.getElementById('count_ness').innerHTML="Текст";
 }
+
+
+$('.users__holder.temaclass').click(function(){
+  $('.w-open-chat').hide();
+});
+
+
+
+
 
 
     </script>

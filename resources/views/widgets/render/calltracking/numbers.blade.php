@@ -4,26 +4,26 @@
          transform: translate3d(25%, 0, 0);
      }</style>
 
-    <div class="col-md-3"><a class="btn btn-info" href="#myModalBox" data-toggle="modal">Добавить
-            номера</a></div>
-    <div class="col-md-3"><a class="btn btn-info" href="#"
+    <div class="col-xs-12" style="margin-bottom:10px;     text-align: right;"><a class="btn btn-info" href="#myModalBox" data-toggle="modal">Добавить
+            номера</a>
+<a class="btn btn-info" href="#"
                              onclick="delete_from_routing();return false">Удалить из
             сценария</a></div>
     <div class="col-md-12">
         <fieldset>
 
-            <table class="table table-bordered">
-                <tr>
-                    <td></td>
-                    <td>Номер</td>
-                    <td>Сценарий</td>
-                    <td>Звонки</td>
-                    <td>Подключен</td>
-                    <td>Закреплен до</td>
-                    <td></td>
+            <table class="table">
+                <thead> <tr>
+                    <th></th>
+                    <th>Номер</th>
+                    <th>Сценарий</th>
+                    <th>Звонки</th>
+                    <th>Подключен</th>
+                    <th>Закреплен до</th>
+                    <th></th>
 
 
-                </tr>
+                </tr></thead>
                 @foreach($phones as $phone)
                     <tr id="ids{{$phone->id}}">
                         <td><input type="checkbox" class="my_numberscheckbox"

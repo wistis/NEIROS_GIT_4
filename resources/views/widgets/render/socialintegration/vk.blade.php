@@ -63,48 +63,32 @@
         <div class="col-xs-12">
 
 
-                <div class="form-group row">
-                    <label class="col-lg-3 control-label">ID группы:</label>
-                    <div class="col-md-9">
-                        <input type="text" class="form-control" name="groupid" id="groupid"  value="{{$widget_vk->groupid}}"  required>
+
+            <div class="form-group row" style="margin-top: 10px">
+                <div class="col-md-9">
+                    {!! $fb_url !!}
+                </div>
+
+            </div>
+            @if(count($fb_pages)>0)
+
+                <div class="row">Выберите страницы для подключения к чат боту</div>
+                @foreach($fb_pages as $item)
+                    <div class="form-group row">
+                        <input type="checkbox" name="pages[]" value="{{$item->vk_id}}" @if($item->status==1) checked @endif>{{$item->name}} @if($item->token!='')<i class="fa fa-check"></i>@endif
 
                     </div>
 
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 control-label">Код подтверждения:</label>
-                    <div class="col-md-9">
-                        <input type="text" class="form-control" name="confirmation" id="confirmation"  value="{{$widget_vk->confirmation}}"  required>
-
-                    </div>
-
-                </div>
-
-
-                <div class="form-group row">
-                    <label class="col-lg-3 control-label">Api Key:</label>
-                    <div class="col-md-9">
-                        <input type="text" class="form-control" name="apikey" id="apikey"  value="{{$widget_vk->apikey}}"  required>
-
-                    </div>
-
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 control-label">URL для Vk:</label>
-                    <div class="col-md-9">
-                        <input type="text" class="form-control" name="urllll" id=" "  value="https://cloud.neiros.ru/api/vkapi/callback_handleEvent/{{$sites->hash}}"  required>
-
-                    </div>
-
-                </div>
+                @endforeach
+                <div id="vk_but_now"></div>
+            @endif
 
 
 
 
-					            
-                    <div class="form-group footer-button">
+            <div class="form-group footer-button">
             <div class="col-xs-12">
-            	<button type="button"  class="btn btn-primary  w_safebutton">Сохранить</button>
+            	<button type="button"  class="btn btn-primary  w_safebutton_vk">Сохранить</button>
        
                 <button type="button" class="btn btn-default " data-dismiss="modal" aria-hidden="true">Закрыть</button>
             </div>

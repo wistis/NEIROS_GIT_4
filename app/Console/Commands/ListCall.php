@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\GoogleUploadController;
 use Google\Protobuf\Api;
 use Illuminate\Console\Command;
 use DB;
@@ -43,15 +44,20 @@ class ListCall extends Command
      */
     public function handle()
     {
-        $DirectController=new AjaxController();
+     //   $DirectController=new AjaxController();
 
-        $DirectController->generatecallback();
-        $DirectController->generatecalltrack();
-
-
+       // $DirectController->generatecallback();
+       // $DirectController->generatecalltrack();
 
 
+        $ajax=new AjaxController();
 
+        $ajax-> generatecallback();
+        $ajax-> generatecalltrack();
+        $go=new GoogleUploadController();
+        $go->upload_file_from_server();
+        $go->get_file();
+        $go->set_permis(3);
 
 
 

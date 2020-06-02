@@ -91,7 +91,22 @@ class NewDirectReportsController extends Controller
     }
 
 
+    public function get_new_0_lvl(){
+     return   $direct_company_id=DB::connection('neiros_direct1')->table('direct_otchet_parcer_'.$this->my_company_id)->whereBetween('Date', $this->period)->
+            select(\DB::raw('SUM(Clicks) as posetitel'),
+                \DB::raw('SUM(Clicks) as unique_visit'),
+                \DB::raw('SUM(Clicks) as visit'),
+                \DB::raw('SUM(Clicks) as count_group'),
+                \DB::raw('SUM(Cost) as cost'))->first();
+
+
+
+    }
+
+
     public function get_0_lvl(){
+
+
 
         $direct_company_id=DB::connection('neiros_direct1')->table('direct_otchet_parcer_'.$this->my_company_id)->whereBetween('Date', $this->period)->distinct('CampaignId')->pluck( 'CampaignId');
 

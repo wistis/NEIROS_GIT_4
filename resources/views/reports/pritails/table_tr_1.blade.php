@@ -20,22 +20,43 @@ margin-top: 4px;display: none"></td>
 </tr><tr  id="m{{$hash}}"></tr><?php */?>
 
 @if($namegroup != '')
-<? $array = array('bing', 'direct-yandex', 'duckduckgo', 'go.mail.ru', 'google', 'google-ads', 'rambler', 'referral', 'yahoo', 'yandex', 'tut.by', 'ask', 'baidu','zapmeta');
+<? $array = array('bing', 'direct-yandex', 'duckduckgo', 'go.mail.ru', 'google', 'google-ads', 'rambler', 'referral', 'yahoo', 'yandex', 'tut.by', 'ask', 'baidu','zapmeta','instagram','market','my.mail','ok','twitter','youtube','facebook');
 $str = mb_strtolower($namegroup);
  $key = array_search($str, $array);
  if($key >-1){
 	 $src = $str;
 	 }
 	 else{
+	
 		   $src = 'searh';
 		 if($str == 'mail.ru'){
 			  $src = 'go.mail.ru';
 			 }
+		if($str == 'одноклассники'){
+			  $src = 'ok';
+			 }	 
+			 
+		if($str == 'мой мир'){
+			  $src = 'my.mail';
+			 }	 
+			if($str == 'вконтакте'){
+			  $src = 'vk';
+			 }	 
+				if($str == 'яндекс.директ'){
+			  $src = 'direct-yandex';
+			 }		 	 
+	 	 				if($str == 'google ads'){
+			  $src = 'gle-dc';
+			 }	
+			if($str == 'маркет' || $str == 'яндекс.маркет'){
+			  $src = 'market';
+			 }		 
+			 
 		
 		 }
 ?>
 <tr>
-    <td  style="min-width: {{$mass_width[0]+1}}px; width: {{$mass_width[0]+1}}px; max-width: {{$mass_width[0]+1}}px;" class="left-sitebar-table border-table-data"><div class="more-data more-data-child" ><img src="/images/icon/{{$src}}.ico"><?php /*?>{!! $newlvl !!}<?php */?>  {!! $namegroup !!}</div>
+    <td  style="min-width: {{$mass_width[0]+1}}px; width: {{$mass_width[0]+1}}px; max-width: {{$mass_width[0]+1}}px;" class="left-sitebar-table border-table-data"><div class="more-data more-data-child" ><img src="/images/icon/SVG/all/{{$src}}.svg"><?php /*?>{!! $newlvl !!}<?php */?>  {!! $namegroup !!}</div>
     <img src="/25.gif" class="m{{$hash}}" style="height: 14px;float: right;margin-top: 4px;display: none"></td>
 
     <td class="border-table-data" style="min-width: {{$mass_width[1]+2}}px; width: {{$mass_width[1]+2}}px; max-width: {{$mass_width[1]+2}}px;" ><div>{{$repgroup->posetitel}}</div></td>

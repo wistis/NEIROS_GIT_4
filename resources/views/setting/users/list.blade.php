@@ -54,7 +54,7 @@
                 <tbody id="user_tbody">
                @foreach($stages as $client)    <tr  id="del{{$client->id}}">
 
-                    <td><span class="user-avatar">  @if((isset($client))&&($client->image!=''))
+                    <td><span class="user-avatar user-avatar-ic">  @if((isset($client))&&($client->image!=''))
                                 <span class="user-avatar">  <img src="/user_upload/user_logo/{{$client->image}}"></span>
 
                             @else

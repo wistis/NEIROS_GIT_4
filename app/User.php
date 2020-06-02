@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Call\BayPhone;
 use App\Models\Servies\GroupRoles;
 use App\Models\Servies\UsersGroup;
 use App\Models\Settings\CompanyDefaultSetting;
@@ -37,6 +38,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function getMyCompany(){
+return $this->hasOne(Users_company::class,'id','my_company_id');
+    }
+
     public function getroles()
     {
         return $this->hasMany('App\User_roles','user_id','id');
@@ -45,11 +50,26 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Users_company','id','my_company_id');
     }
+    public function getNumbers(){
 
+        return $this->hasMany(BayPhone::class,'my_company_id','my_company_id');
+    }
 
+    public function getNumbersActive(){
+return $this->getNumbers()->where('was_deleted',0)->count();
+
+    }
+public function getSites(){
+
+        return $this->hasMany(Sites::class,'my_company_id','my_company_id');
+}
     public function get_site()
     {
         return $this->belongsTo('App\Sites','site');
+    }
+    public function get_site_()
+    {
+        return Sites::find($this->site);
     }
 
 

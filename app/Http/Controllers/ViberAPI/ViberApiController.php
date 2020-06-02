@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ViberAPI;
 
+use App\Models\Servies\ALpParam;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -118,6 +119,7 @@ return $tema_id;
     public function callback_handleEvent($key,Request $request){
       $data=$request->all();
 
+ \Log::info('foromviber');
  \Log::info($data);
 
         $site=DB::table('sites')->where('hash',$request->key)->first();
@@ -148,15 +150,37 @@ return $tema_id;
 
 // так будет выглядеть наш бот (имя и аватар - можно менять)
         $botSender = new Sender([
-            'name' => 'Whois bot',
+            'name' => 'Neiros',
             'avatar' => 'https://developers.viber.com/img/favicon.ico',
         ]);
         \Log::info('viber 2');
         try {
             \Log::info('viber 32');
+$provlp=ALpParam::where('utm',$request->context)->first();
+info(json_encode($provlp));
+            if($provlp){
+
+                $bot = new Bot(['token' => $apiKey]);
+                $bot ->onConversation(function ($event) use ($bot, $botSender,$widget_viber,$widget,$site,$data,$provlp) {
+                    // это событие будет вызвано, как только пользователь перейдет в чат
+                    // вы можете отправить "привествие", но не можете посылать более сообщений
+
+
+                        return (new \Viber\Api\Message\File())
+                            ->setSender($botSender)
+                            ->setMedia($provlp->url)
+                            ->setSize($provlp->massa)
+                            ->setFileName($provlp->url_name);
+
+                })  ->run();
+
+
+
+            }
+
+
             $bot = new Bot(['token' => $apiKey]);
-            $bot
-                ->onConversation(function ($event) use ($bot, $botSender,$widget_viber,$widget,$site,$data) {
+            $bot ->onConversation(function ($event) use ($bot, $botSender,$widget_viber,$widget,$site,$data) {
                     // это событие будет вызвано, как только пользователь перейдет в чат
                     // вы можете отправить "привествие", но не можете посылать более сообщений
                  if(strlen($widget_viber->start_message)>2) {
@@ -182,7 +206,9 @@ return $tema_id;
                 })
                 ->run();
         } catch (Exception $e) {
-            return $e;
+
+            info($e);
+
             // todo - log exceptions
         }
 

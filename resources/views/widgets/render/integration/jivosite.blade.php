@@ -1,6 +1,6 @@
 <div class="col-md-3 integration-item">
     <div class="single-cases-card" >
-        <div class="card-image"><a data-toggle="modal" data-target="#myModal_sett_21"><img alt="" src="/images/jivosite.jpg" draggable="false" class="img-responsive"></a>
+        <div class="card-image"><a data-toggle="modal" data-target="#myModal_sett_21"><img alt="" src="/global_assets/images/integration/jivosite.jpg" draggable="false" class="img-responsive"></a>
             <div class="hover-area"> </div>
         </div>
         <!-- .card-image END -->
@@ -27,7 +27,7 @@
             <div class="modal-body">
                 <div class="name-block-fixed name-block-fixed-integration">
                     <div class="col-xs-12" >
-                        <div class="h1-modal pos-left"><img src="/images/ga-integration.jpg"><span></span></div>
+                        <div class="h1-modal pos-left"><img src="/images/jivosite-integration.jpg"><span></span></div>
 
                         <input type="hidden" class="form-control" name="id"
                                value="{{$widget_ga_call->id}}">
@@ -39,7 +39,7 @@
                 <div class="row">
 
                     <div class="col-xs-12 block-descr">
-                        <div class="col-sm-6"><div class="img-block-left"><img width="100%" src="/images/jivosite.jpg"></div></div>
+                        <div class="col-sm-6"><div class="img-block-left"><img width="100%" src="/global_assets/images/integration/jivosite.jpg"></div></div>
                         <div class="col-sm-6">
                             <div class="paragraph">Jivosite</div>
                             <input type="hidden" class="form-control" name="id"

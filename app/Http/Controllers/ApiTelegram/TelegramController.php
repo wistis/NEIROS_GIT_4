@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ApiTelegram;
 
+use App\Models\Servies\ALpParam;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Log;
@@ -65,7 +66,14 @@ $data['data']=$stroka;
         )
         */
       ;
-      Log::info("старт");        $datam = $request->all();
+      Log::info("старт");
+      $datam = $request->all();
+      Log::info("from_telegram");
+      Log::info($datam);
+
+
+
+
         $site = DB::table('sites')->where('hash', $request->key)->first();
 
         ;
@@ -73,45 +81,32 @@ $data['data']=$stroka;
 
             return 'error01';
         }
-        $widget = DB::table('widgets')->where('sites_id', $site->id)->where('tip', 6)->first();
+        $widget = DB::table('widgets')->where('sites_id', $site->id)->where('tip', 8)->first();
         if (!$widget) {
             return 'error02';
 
         }
 
-        $widget_ok = DB::table('widget_ok')->where('widget_id', $widget->id)->first();
+        $widget_ok = DB::table('widget_telegram')->where('widget_id', $widget->id)->first();
 
         if (!$widget_ok) {
+
             return 'error03';
         }
-        /*if($data['event']=='conversation_started'){
-                    $this->create_viber_user($data,$widget_viber,$widget,$site);
-                }
 
-        */
-        /*
-          'update_id' => 670165895,
-  'message' =>
-  array (
-    'message_id' => 15,
-    'from' =>
-    array (
-      'id' => 487962478,
-      'is_bot' => false,
-      'first_name' => 'Wistis',
-      'language_code' => 'ru',
-    ),
-    'chat' =>
-    array (
-      'id' => 487962478,
-      'first_name' => 'Wistis',
-      'type' => 'private',
-    ),
-    'date' => 1530179640,
-    'text' => 'Е5енн',
-  ),
-) */
+info(json_encode($widget_ok));
         $data=$datam['message'];
+
+            $provlp=ALpParam::where('utm',str_replace('/start ','',$data['text']))->first();
+        info(json_encode($provlp));
+        if($provlp){
+            $datas['apikey']=$widget_ok->apikey;
+            $datas['chat_id']=$data['chat']['id'];
+            $datas['file']=$provlp->url;
+
+            return  $this->send_mess_1($datas);
+        }
+
         $widget_vk_input_id = DB::table('widget_telegram_input')->insertGetId([
             'user_id' => $site->user_id,
             'my_company_id' => $site->my_company_id,
@@ -257,6 +252,24 @@ $data['data']=$stroka;
         $data['apikey']=$apiKey;
         $data['chat_id']=$user_id;
         $data['message']=$message;
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, 'https://telega.neiros.ru/sendmessage.php');
+        // curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=utf-8'));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, "stroka=".json_encode($data));
+        $out = curl_exec($curl);
+
+        curl_close($curl);
+        return $out;
+
+    }
+    public function send_mess_1($data){
+
+
+       /* echo  file_get_contents('https://api.telegram.org/bot'.$_POST['apikey'].'/sendMessage?chat_id='.$_POST['chat_id'].'&text='.$_POST['message'].'');*/
+
+
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, 'https://telega.neiros.ru/sendmessage.php');
         // curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json;charset=utf-8'));

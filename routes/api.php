@@ -29,7 +29,8 @@ Route::post('/v1/widget/form/mail', 'ApiController@form_mail_v1');
 Route::post('/v1/widget/form/socialclick', 'ApiController@socialclick');
 Route::match(['GET','POST'],'/v1/myasterwebhock', 'ApiController@myasterwebhock');
 
-
+Route::match(['GET','POST'],'/fromasteraudio', 'ApiController@fromasteraudio');
+Route::match(['GET','POST'],'/n', 'ApiController@n');
 
 
 
@@ -56,6 +57,7 @@ Route::get('/inputjs/{key}', 'Api\WidgetApiController@inputjs');
 
 Route::post('/vkapi/callback_handleEvent/{key}', 'VkApiController@callback_handleEvent');
 Route::get('/vkapi/callback_handleEvent/{key}', 'VkApiController@callback_handleEvent');
+Route::get('/sendvk_from_neiros', 'VkApiController@sendvk_from_neiros');
 Route::post('/viberapi/callback_handleEvent/{key}', 'ViberAPI\ViberApiController@callback_handleEvent');
 Route::post('/okapi/callback_handleEvent/{key}', 'OkApi\OkApiController@callback_handleEvent');
 Route::match(['GET','POST'],'/fbapi/callback_handleEvent', 'FbApi\FbController@callback_handleEvent');

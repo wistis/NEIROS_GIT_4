@@ -1,4 +1,5 @@
-<script type="text/javascript" src="//cdn.bootcss.com/echarts/4.0.4/echarts.min.js"></script><script type="text/javascript" src="/default/assets/js/plugins/ui/moment/moment.min.js"></script><script type="text/javascript" src="/default/assets/js/plugins/pickers/daterangepicker.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/echarts/4.0.4/echarts.min.js"></script><script type="text/javascript" src="/default/assets/js/plugins/ui/moment/moment.min.js"></script>        <script src="/js/daterangepicker3.js"></script>
+  	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />   
 
 <script>
     function setdate(start, end) {
@@ -32,32 +33,51 @@
     }
 
 
-    $('.daterange-ranges').daterangepicker(
-        {
-            startDate: moment().subtract(29, 'days'),
-            endDate: moment(),
-            minDate: '01/01/2018',
-            /* maxDate: '12/31/2016',*/
-            dateLimit: {days: 60},
-            ranges: {
-                'Сегодня': [moment(), moment()],
-                'Вчера': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'за 7 дней': [moment().subtract(6, 'days'), moment()],
-                'За 30 дней': [moment().subtract(29, 'days'), moment()],
-                'Этот месяц': [moment().startOf('month'), moment().endOf('month')],
-                'Прошлый месяц': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-                'За все время': [moment().subtract(2, 'month').startOf('month'), moment().subtract(0, 'month').endOf('month')],
-            },
-            opens: 'left',
-            applyClass: 'btn-small bg-slate-600 btn-block',
-            cancelClass: 'btn-small btn-default btn-block',
-            format: 'MM/DD/YYYY'
-        },
-        function (start, end) {
-            $('.daterange-ranges span').html(start.format('D-MM-Y') + ' - ' + end.format('D-MM-Y'));
+
+	
+	
+   $('.daterange-ranges').daterangepicker({
+				 "autoApply": false,
+				  "linkedCalendars": true,
+				     "alwaysShowCalendars": true,
+					   "showDropdowns": true,
+					   opens: 'left',
+
+	"startDate": "<?=date("d-m-Y", strtotime($stat_start_date))?>",
+	"endDate": "<?=date("d-m-Y", strtotime($stat_end_date))?>",
+/*	"maxDate": "21-12-2019",
+	"minDate": "01-01-2019",*/
+
+ "locale": {
+        "format": "DD-MM-YYYY",
+        "separator": " - ",
+        "applyLabel": "Применить",
+        "cancelLabel": "Отмена",
+        "fromLabel": "От",
+        "toLabel": "До",
+        "customRangeLabel": "Заданый",
+        "daysOfWeek": [
+            'Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'
+        ],
+        "monthNames": [
+            'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+            'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+        ],
+		 "firstDay": 1
+    }
+	
+
+	
+}
+,
+            function (start, end) {
+              $('.daterange-ranges span').html(start.format('D-MM-Y') + ' - ' + end.format('D-MM-Y'));
             setdate(start.format('Y-MM-D'), end.format('Y-MM-D'));
-        }
-    );
+            }
+
+
+); 	
+	
 
     $('.daterange-ranges span').html('<?=date("d-m-Y", strtotime($stat_start_date))?> - <?=date("d-m-Y", strtotime($stat_end_date))?>');
 
